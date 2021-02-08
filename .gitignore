@@ -1,0 +1,4 @@
+secrets.sh
+env/
+_pycache_
+import.py
