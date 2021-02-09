@@ -1,8 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 
-from flask import Flask, render_template, request
-
 
 db = SQLAlchemy()
 
@@ -11,25 +9,25 @@ class Track(db.Model):
     __tablename__ = "tracks"
 
     track_id = db.Column(db.String, primary_key = True)
-    danceability = db.Column(db.Float)
-    energy = db.Column(db.Float)
-    key = db.Column(db.Integer)
-    loudness = db.Column(db.Float)
-    mode = db.Column(db.Integer)
-    speechiness = db.Column(db.Float)
-    acoutsicness = db.Column(db.Float)
-    instrumentalness = db.Column(db.Float)
-    liveness = db.Column(db.Float)
-    valence = db.Column(db.Float)
-    tempo = db.Column(db.Float)
-    uri = db.Column(db.String)
-    track_href = db.Column(db.String)
-    analysis_url = db.Column(db.String)
-    duration_ms = db.Column(db.Integer)
-    time_signature = db.Column(db.Integer)
-    name = db.Column(db.String)
-    explicit = db.Column(db.Boolean)
-    popularity = db.Column(db.Float)
+    danceability = db.Column(db.Integer)
+    # energy = db.Column(db.Float)
+    # key = db.Column(db.Integer)
+    # loudness = db.Column(db.Float)
+    # mode = db.Column(db.Integer)
+    # speechiness = db.Column(db.Float)
+    # acoutsicness = db.Column(db.Float)
+    # instrumentalness = db.Column(db.Float)
+    # liveness = db.Column(db.Float)
+    # valence = db.Column(db.Float)
+    # tempo = db.Column(db.Float)
+    # uri = db.Column(db.String)
+    # track_href = db.Column(db.String)
+    # analysis_url = db.Column(db.String)
+    # duration_ms = db.Column(db.Integer)
+    # time_signature = db.Column(db.Integer)
+    # name = db.Column(db.String)
+    # explicit = db.Column(db.Boolean)
+    # popularity = db.Column(db.Float)
 
     def __repr__(self):
         return f'<<song_id = {self.song_id}>>'
