@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to my really cool app{% endblock %}
+
+{% block js %}
+  <script src="/static/js/homepage.jsx" type="text/jsx"></script>
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Mount your react components on to this element. -->
+<div id="app"></div>
+
+{% endblock %}
