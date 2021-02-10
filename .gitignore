@@ -1,5 +1,5 @@
 secrets.sh
 env/
-_pycache_
+_pycache_/
 import.py
 data.csv

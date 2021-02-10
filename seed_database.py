@@ -19,7 +19,8 @@ model.db.create_all()
 # cid = os.environ.get('cid')
 # secret = os.getenv('secret')
 
-
+cid = 'e4d8c31fbbf647eb9d98e57ac4a1995c'
+secret = '2342c54fe3254294847de1c834cb3647'
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
