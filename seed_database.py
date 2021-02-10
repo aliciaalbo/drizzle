@@ -16,11 +16,10 @@ import server
 model.connect_to_db(server.app)
 model.db.create_all()
 
-# cid = os.environ.get('cid')
-# secret = os.getenv('secret')
+cid = os.environ['cid']
+secret = os.environ['secret']
 
-cid = 'e4d8c31fbbf647eb9d98e57ac4a1995c'
-secret = '2342c54fe3254294847de1c834cb3647'
+
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
@@ -31,7 +30,7 @@ spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 master_track_ids = set()
 
 # Make list of playlist IDs
-happy_playlists = spotify.search("happy", type="playlist")
+happy_playlists = spotify.search("happy", type="playlist", limit=1)
 playlists = []
 
 for i, item in enumerate(happy_playlists['playlists']['items']):
@@ -144,342 +143,342 @@ while (start_batch < end_at):
 
 
 
-sad_playlists = spotify.search("sad", type="playlist")
-playlists = []
+# sad_playlists = spotify.search("sad", type="playlist")
+# playlists = []
 
-for i, item in enumerate(sad_playlists['playlists']['items']):
-    playlists.append(item['id'])
+# for i, item in enumerate(sad_playlists['playlists']['items']):
+#     playlists.append(item['id'])
 
-tracks = []
-titles = []
+# tracks = []
+# titles = []
 
-for item in playlists:
-    response = spotify.playlist_items(item,
-                                fields='items.track.id,, items.track.name,total',
-                                additional_types=['track'])
-    for track in response['items']:
-        if track['track']['id'] not in master_track_ids:
-            master_track_ids.add(track['track']['id'])
-            if track['track']['id'] not in tracks:
-                tracks.append(track['track']['id'])
-                titles.append(track['track']['name'])
-
-
-start_batch = 0
-batch_size = 100
-end_at = len(tracks) - 1
-
-while (start_batch < end_at):
-    end_batch = start_batch + batch_size
-    if end_batch > end_at:
-        end_batch = end_at
-
-    track_ids = tracks[start_batch:end_batch]
-    track_info = spotify.audio_features(track_ids)
-
-    for i in range(len(track_info)):
-        track = track_info[i]
-        acousticness = track['acousticness']
-        track_id = track['id']
-        danceability = track['danceability']
-        duration_ms = track['duration_ms']
-        energy = track['energy']
-        instrumentalness = track['instrumentalness']
-        key = track['key']
-        liveness = track['liveness']
-        loudness = track['loudness']
-        mode = track['mode']
-        name = titles[start_batch + i]
-        speechiness = track['speechiness']
-        tempo = track['tempo']
-        valence = track['valence']
+# for item in playlists:
+#     response = spotify.playlist_items(item,
+#                                 fields='items.track.id,, items.track.name,total',
+#                                 additional_types=['track'])
+#     for track in response['items']:
+#         if track['track']['id'] not in master_track_ids:
+#             master_track_ids.add(track['track']['id'])
+#             if track['track']['id'] not in tracks:
+#                 tracks.append(track['track']['id'])
+#                 titles.append(track['track']['name'])
 
 
-    
-        new_track = crud.create_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-        new_sad_track = crud.create_sad_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-    start_batch += batch_size
-    time.sleep(1)
+# start_batch = 0
+# batch_size = 100
+# end_at = len(tracks) - 1
 
-calm_playlists = spotify.search("calm", type="playlist")
-playlists = []
+# while (start_batch < end_at):
+#     end_batch = start_batch + batch_size
+#     if end_batch > end_at:
+#         end_batch = end_at
 
-for i, item in enumerate(calm_playlists['playlists']['items']):
-    playlists.append(item['id'])
+#     track_ids = tracks[start_batch:end_batch]
+#     track_info = spotify.audio_features(track_ids)
 
-tracks = []
-titles = []
-
-for item in playlists:
-    response = spotify.playlist_items(item,
-                                fields='items.track.id,, items.track.name,total',
-                                additional_types=['track'])
-    for track in response['items']:
-        if track['track']['id'] not in master_track_ids:
-            master_track_ids.add(track['track']['id'])
-            if track['track']['id'] not in tracks:
-                tracks.append(track['track']['id'])
-                titles.append(track['track']['name'])
-
-
-start_batch = 0
-batch_size = 100
-end_at = len(tracks) - 1
-
-while (start_batch < end_at):
-    end_batch = start_batch + batch_size
-    if end_batch > end_at:
-        end_batch = end_at
-
-    track_ids = tracks[start_batch:end_batch]
-    track_info = spotify.audio_features(track_ids)
-
-    for i in range(len(track_info)):
-        track = track_info[i]
-        acousticness = track['acousticness']
-        track_id = track['id']
-        danceability = track['danceability']
-        duration_ms = track['duration_ms']
-        energy = track['energy']
-        instrumentalness = track['instrumentalness']
-        key = track['key']
-        liveness = track['liveness']
-        loudness = track['loudness']
-        mode = track['mode']
-        name = titles[start_batch + i]
-        speechiness = track['speechiness']
-        tempo = track['tempo']
-        valence = track['valence']
+#     for i in range(len(track_info)):
+#         track = track_info[i]
+#         acousticness = track['acousticness']
+#         track_id = track['id']
+#         danceability = track['danceability']
+#         duration_ms = track['duration_ms']
+#         energy = track['energy']
+#         instrumentalness = track['instrumentalness']
+#         key = track['key']
+#         liveness = track['liveness']
+#         loudness = track['loudness']
+#         mode = track['mode']
+#         name = titles[start_batch + i]
+#         speechiness = track['speechiness']
+#         tempo = track['tempo']
+#         valence = track['valence']
 
 
     
-        new_track = crud.create_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-        new_calm_track = crud.create_calm_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-    start_batch += batch_size
-    time.sleep(1)
+#         new_track = crud.create_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#         new_sad_track = crud.create_sad_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#     start_batch += batch_size
+#     time.sleep(1)
+
+# calm_playlists = spotify.search("calm", type="playlist")
+# playlists = []
+
+# for i, item in enumerate(calm_playlists['playlists']['items']):
+#     playlists.append(item['id'])
+
+# tracks = []
+# titles = []
+
+# for item in playlists:
+#     response = spotify.playlist_items(item,
+#                                 fields='items.track.id,, items.track.name,total',
+#                                 additional_types=['track'])
+#     for track in response['items']:
+#         if track['track']['id'] not in master_track_ids:
+#             master_track_ids.add(track['track']['id'])
+#             if track['track']['id'] not in tracks:
+#                 tracks.append(track['track']['id'])
+#                 titles.append(track['track']['name'])
 
 
-excited_playlists = spotify.search("excited", type="playlist")
-playlists = []
+# start_batch = 0
+# batch_size = 100
+# end_at = len(tracks) - 1
 
-for i, item in enumerate(excited_playlists['playlists']['items']):
-    playlists.append(item['id'])
+# while (start_batch < end_at):
+#     end_batch = start_batch + batch_size
+#     if end_batch > end_at:
+#         end_batch = end_at
 
-tracks = []
-titles = []
+#     track_ids = tracks[start_batch:end_batch]
+#     track_info = spotify.audio_features(track_ids)
 
-for item in playlists:
-    response = spotify.playlist_items(item,
-                                fields='items.track.id,, items.track.name,total',
-                                additional_types=['track'])
-    for track in response['items']:
-        if track['track']['id'] not in master_track_ids:
-            master_track_ids.add(track['track']['id'])
-            if track['track']['id'] not in tracks:
-                tracks.append(track['track']['id'])
-                titles.append(track['track']['name'])
-
-
-start_batch = 0
-batch_size = 100
-end_at = len(tracks) - 1
-
-while (start_batch < end_at):
-    end_batch = start_batch + batch_size
-    if end_batch > end_at:
-        end_batch = end_at
-
-    track_ids = tracks[start_batch:end_batch]
-    track_info = spotify.audio_features(track_ids)
-
-    for i in range(len(track_info)):
-        track = track_info[i]
-        acousticness = track['acousticness']
-        track_id = track['id']
-        danceability = track['danceability']
-        duration_ms = track['duration_ms']
-        energy = track['energy']
-        instrumentalness = track['instrumentalness']
-        key = track['key']
-        liveness = track['liveness']
-        loudness = track['loudness']
-        mode = track['mode']
-        name = titles[start_batch + i]
-        speechiness = track['speechiness']
-        tempo = track['tempo']
-        valence = track['valence']
-
-
-    
-        new_track = crud.create_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-        new_excited_track = crud.create_excited_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-    start_batch += batch_size
-    time.sleep(1)
-
-angry_playlists = spotify.search("angry", type="playlist")
-playlists = []
-
-for i, item in enumerate(angry_playlists['playlists']['items']):
-    playlists.append(item['id'])
-
-tracks = []
-titles = []
-
-for item in playlists:
-    response = spotify.playlist_items(item,
-                                fields='items.track.id,, items.track.name,total',
-                                additional_types=['track'])
-    for track in response['items']:
-        if track['track']['id'] not in master_track_ids:
-            master_track_ids.add(track['track']['id'])
-            if track['track']['id'] not in tracks:
-                tracks.append(track['track']['id'])
-                titles.append(track['track']['name'])
-
-start_batch = 0
-batch_size = 100
-end_at = len(tracks) - 1
-
-while (start_batch < end_at):
-    end_batch = start_batch + batch_size
-    if end_batch > end_at:
-        end_batch = end_at
-
-    track_ids = tracks[start_batch:end_batch]
-    track_info = spotify.audio_features(track_ids)
-
-    for i in range(len(track_info)):
-        track = track_info[i]
-        acousticness = track['acousticness']
-        track_id = track['id']
-        danceability = track['danceability']
-        duration_ms = track['duration_ms']
-        energy = track['energy']
-        instrumentalness = track['instrumentalness']
-        key = track['key']
-        liveness = track['liveness']
-        loudness = track['loudness']
-        mode = track['mode']
-        name = titles[start_batch + i]
-        speechiness = track['speechiness']
-        tempo = track['tempo']
-        valence = track['valence']
+#     for i in range(len(track_info)):
+#         track = track_info[i]
+#         acousticness = track['acousticness']
+#         track_id = track['id']
+#         danceability = track['danceability']
+#         duration_ms = track['duration_ms']
+#         energy = track['energy']
+#         instrumentalness = track['instrumentalness']
+#         key = track['key']
+#         liveness = track['liveness']
+#         loudness = track['loudness']
+#         mode = track['mode']
+#         name = titles[start_batch + i]
+#         speechiness = track['speechiness']
+#         tempo = track['tempo']
+#         valence = track['valence']
 
 
     
-        new_track = crud.create_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-        new_angry_track = crud.create_angry_track(acousticness, 
-                                  danceability, 
-                                  duration_ms, 
-                                  energy,
-                                  track_id,
-                                  instrumentalness,
-                                  key,
-                                  liveness,
-                                  loudness,
-                                  mode,
-                                  name,
-                                  speechiness,
-                                  tempo,
-                                  valence
-                                )
-    start_batch += batch_size
-    time.sleep(1)
+#         new_track = crud.create_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#         new_calm_track = crud.create_calm_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#     start_batch += batch_size
+#     time.sleep(1)
+
+
+# excited_playlists = spotify.search("excited", type="playlist")
+# playlists = []
+
+# for i, item in enumerate(excited_playlists['playlists']['items']):
+#     playlists.append(item['id'])
+
+# tracks = []
+# titles = []
+
+# for item in playlists:
+#     response = spotify.playlist_items(item,
+#                                 fields='items.track.id,, items.track.name,total',
+#                                 additional_types=['track'])
+#     for track in response['items']:
+#         if track['track']['id'] not in master_track_ids:
+#             master_track_ids.add(track['track']['id'])
+#             if track['track']['id'] not in tracks:
+#                 tracks.append(track['track']['id'])
+#                 titles.append(track['track']['name'])
+
+
+# start_batch = 0
+# batch_size = 100
+# end_at = len(tracks) - 1
+
+# while (start_batch < end_at):
+#     end_batch = start_batch + batch_size
+#     if end_batch > end_at:
+#         end_batch = end_at
+
+#     track_ids = tracks[start_batch:end_batch]
+#     track_info = spotify.audio_features(track_ids)
+
+#     for i in range(len(track_info)):
+#         track = track_info[i]
+#         acousticness = track['acousticness']
+#         track_id = track['id']
+#         danceability = track['danceability']
+#         duration_ms = track['duration_ms']
+#         energy = track['energy']
+#         instrumentalness = track['instrumentalness']
+#         key = track['key']
+#         liveness = track['liveness']
+#         loudness = track['loudness']
+#         mode = track['mode']
+#         name = titles[start_batch + i]
+#         speechiness = track['speechiness']
+#         tempo = track['tempo']
+#         valence = track['valence']
+
+
+    
+#         new_track = crud.create_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#         new_excited_track = crud.create_excited_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#     start_batch += batch_size
+#     time.sleep(1)
+
+# angry_playlists = spotify.search("angry", type="playlist")
+# playlists = []
+
+# for i, item in enumerate(angry_playlists['playlists']['items']):
+#     playlists.append(item['id'])
+
+# tracks = []
+# titles = []
+
+# for item in playlists:
+#     response = spotify.playlist_items(item,
+#                                 fields='items.track.id,, items.track.name,total',
+#                                 additional_types=['track'])
+#     for track in response['items']:
+#         if track['track']['id'] not in master_track_ids:
+#             master_track_ids.add(track['track']['id'])
+#             if track['track']['id'] not in tracks:
+#                 tracks.append(track['track']['id'])
+#                 titles.append(track['track']['name'])
+
+# start_batch = 0
+# batch_size = 100
+# end_at = len(tracks) - 1
+
+# while (start_batch < end_at):
+#     end_batch = start_batch + batch_size
+#     if end_batch > end_at:
+#         end_batch = end_at
+
+#     track_ids = tracks[start_batch:end_batch]
+#     track_info = spotify.audio_features(track_ids)
+
+#     for i in range(len(track_info)):
+#         track = track_info[i]
+#         acousticness = track['acousticness']
+#         track_id = track['id']
+#         danceability = track['danceability']
+#         duration_ms = track['duration_ms']
+#         energy = track['energy']
+#         instrumentalness = track['instrumentalness']
+#         key = track['key']
+#         liveness = track['liveness']
+#         loudness = track['loudness']
+#         mode = track['mode']
+#         name = titles[start_batch + i]
+#         speechiness = track['speechiness']
+#         tempo = track['tempo']
+#         valence = track['valence']
+
+
+    
+#         new_track = crud.create_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#         new_angry_track = crud.create_angry_track(acousticness, 
+#                                   danceability, 
+#                                   duration_ms, 
+#                                   energy,
+#                                   track_id,
+#                                   instrumentalness,
+#                                   key,
+#                                   liveness,
+#                                   loudness,
+#                                   mode,
+#                                   name,
+#                                   speechiness,
+#                                   tempo,
+#                                   valence
+#                                 )
+#     start_batch += batch_size
+#     time.sleep(1)

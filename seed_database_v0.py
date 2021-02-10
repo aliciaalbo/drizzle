@@ -1,6 +1,6 @@
 """Script to seed database"""
 
-# from model import connect_to_db, db
+from model import connect_to_db, db
 from server import app
 
 import os
