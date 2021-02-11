@@ -34,7 +34,7 @@ class Track(db.Model):
     mood = db.Column(db.String)
 
     def __repr__(self):
-        return f'<<song_id = {self.song_id}>>'
+        return f'<<song_id = {self.track_id}>>'
 
 class MoodCriteria(db.Model):
     """audio features defining certain moods"""

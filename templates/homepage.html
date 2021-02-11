@@ -1,15 +1,23 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js" crossorigin></script>
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
 
-{% block title %}Welcome to my really cool app{% endblock %}
+  <link href="/static/css/site.css" rel="stylesheet">
+</head>
+<body>
+  <div id="navbar"></div>
 
-{% block js %}
-  <script src="/static/js/homepage.jsx" type="text/jsx"></script>
-{% endblock %}
+  <div id="container"></div>
 
-
-{% block body %}
-
-<!-- Mount your react components on to this element. -->
-<div id="app"></div>
-
-{% endblock %}
+  
+</body>
+<foot> </foot>
+</html>
