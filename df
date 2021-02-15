@@ -1,0 +1,15 @@
+                                              Table "public.playlist_tracks"
+      Column       |       Type        | Collation | Nullable |                          Default                           
+-------------------+-------------------+-----------+----------+------------------------------------------------------------
+ playlist_track_id | integer           |           | not null | nextval('playlist_tracks_playlist_track_id_seq'::regclass)
+ playlist_id       | integer           |           |          | 
+ user_id           | integer           |           |          | 
+ track_id          | character varying |           |          | 
+ name              | character varying |           |          | 
+ artists           | character varying |           |          | 
+Indexes:
+    "playlist_tracks_pkey" PRIMARY KEY, btree (playlist_track_id)
+Foreign-key constraints:
+    "playlist_tracks_playlist_id_fkey" FOREIGN KEY (playlist_id) REFERENCES user_playlists(playlist_id)
+    "playlist_tracks_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+

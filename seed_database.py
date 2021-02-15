@@ -24,8 +24,12 @@ client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secr
 
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+# first pass emotions/moods
+# playlist_emotions = ['happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
 
-playlist_emotions = ['happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
+# second pass
+playlist_emotions = ['chill', 'party', 'dance', 'mellow'
+
 
 for emotion in playlist_emotions:
 

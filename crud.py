@@ -1,4 +1,4 @@
-from model import db, connect_to_db, Track
+from model import db, connect_to_db, Track, PlaylistTracks, User
 from random import choice
 
 
@@ -54,24 +54,64 @@ def create_user(email, password, fname, lname):
 
     return user
 
-def create_playlist(moods):
-    """generate playlist of 20 random tracks based on mood input"""
-    playlist_choice = []
-    for mood in moods:
-        mood_tracks = db.session.query(Track.track_id).filter(Track.mood==mood).all()
 
-        results = [i[0] for i in mood_tracks]
-        playlist_choice.extend(results)
+### For reference
+# def create_playlist(moods):
+#     """generate playlist of 20 random tracks based on mood input"""
+#     playlist_choice = []
+#     for mood in moods:
+#         mood_tracks = db.session.query(Track.track_id).filter(Track.mood==mood).all()
 
-    playlist = set()
-    while len(playlist) < 21:
-        playlist.add(choice(playlist_choice))
+#         results = [i[0] for i in mood_tracks]
+#         playlist_choice.extend(results)
 
-    print(playlist)
+#     playlist = set()
+#     # try/except for edge case of <20 songs
+#     while len(playlist) < 21:
+#         playlist.add(choice(playlist_choice))
+
+#     return playlist
 
 
-def save_playlist(user_id, date, weather_condition, song_id_array):
-    """allows a user to save a generated playlist"""
+def get_user_by_email(email):
+    """Gets a user by email"""
+
+    return User.query.filter(User.email == email).first()
+
+
+
+def create_playlist_id(user_id, weather, date):
+    """creates a playlist for a user"""
+
+    playlist = UserPlaylist(user_id = user_id,
+                            weather = weather, 
+                            date = date)
+
+    db.session.add(playlist)
+    db.session.commit()
+
+    playlist_id = playlist.playlist_id
+    return playlist_id
+
+
+### this needs work... may do tables differently 
+### primary join?
+# def save_playlist(user_id, playlist_id, playlist):
+#     """associates tracks with playlists for a user"""
+
+
+#     for track in playlist:
+#         user_playlist_track = PlaylistTracks(user_id = user_id,
+#                                              playlist_id = playlist_id
+#                                              track_id = track,
+#                  name = db.session.query(Track.name).filter(Track.track_id == track)
+#                 #add artist data? Later. 
+#                 )
+    
+#         db.session.add(user_playlist_track)
+#         db.session.commit()
+
+#     return user_playlist_track
 
 
 

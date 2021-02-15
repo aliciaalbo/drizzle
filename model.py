@@ -90,7 +90,8 @@ class UserPlaylist(db.Model):
 
     playlist_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    mood = db.Column(db.String)
+    # Do I need mood? I think no
+    # mood = db.Column(db.String)
     weather = db.Column(db.String)
     date = db.Column(db.DateTime)
 
