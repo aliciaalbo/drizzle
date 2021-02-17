@@ -69,9 +69,12 @@ class WeatherMood(db.Model):
 
     mood_weather_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     weather_condition = db.Column(db.String)
-    mood = db.Column(db.String, db.ForeignKey("mood_criteria.mood"))
+    mood = db.Column(db.String) 
+    
+    # add back in if analysis happens
+    # db.ForeignKey("mood_criteria.mood")
 
-    criteria = db.relationship(MoodCriteria, backref="weather_moods")
+    # criteria = db.relationship(MoodCriteria, backref="weather_moods")
 
 class User(db.Model):
     """stores user data"""

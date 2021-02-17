@@ -1,4 +1,4 @@
-from model import db, connect_to_db, Track, PlaylistTracks, User
+from model import db, connect_to_db, Track, PlaylistTracks, User, WeatherMood
 from random import choice
 
 
@@ -54,8 +54,17 @@ def create_user(email, password, fname, lname):
 
     return user
 
+def create_weather_mood(weather, mood):
+    """adds new mood-weather pair to db"""
 
-### For reference
+    weather_mood = WeatherMood(weather_condition = weather,
+                                mood = mood)
+
+    db.session.add(weather_mood)
+    db.session.commit()
+    
+    return weather_mood
+
 # def create_playlist(moods):
 #     """generate playlist of 20 random tracks based on mood input"""
 #     playlist_choice = []

@@ -1,14 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>
+    </title>
 
-{% extends 'base.html' %}
-{% block title %}Playlists!{% endblock %}
-
-{% block body %}
+  </head>
   <div id="app"></div>
   <div id="login"></div>
+  <body>
+    </p>
+    <div id="react-root"></div>
+    <script src="{{ url_for('static', filename='dist/bundle.js') }}"></script>
+  </body>
+</html> 
+<!--
   <script type="text/jsx" src="/static/js/homepage.jsx" />
   <script type="text/jsx" src="/static/js/loginForm.jsx" />
-  <!-- 
-
 
   <h2>Create an Account to Save Playlists</h2>
   <form action="/users" method="POST">
@@ -46,32 +55,9 @@
     <p>
       <input type="submit">
     </p>
-  </form> -->
+  </form>
 
-
-{% endblock %} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Document</title>

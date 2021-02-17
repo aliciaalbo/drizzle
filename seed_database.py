@@ -28,86 +28,119 @@ spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 # playlist_emotions = ['happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
 
 # second pass
-playlist_emotions = ['chill', 'party', 'dance', 'mellow'
+# playlist_emotions = ['chill', 'party', 'dance', 'mellow', 'pensive'
 
 
-for emotion in playlist_emotions:
+# for emotion in playlist_emotions:
 
-    emotion_playlists = spotify.search(emotion, type="playlist")
-    playlists = []
+#     emotion_playlists = spotify.search(emotion, type="playlist")
+#     playlists = []
 
-    for i, item in enumerate(emotion_playlists['playlists']['items']):
-        playlists.append(item['id'])
+#     for i, item in enumerate(emotion_playlists['playlists']['items']):
+#         playlists.append(item['id'])
 
-    tracks = []
-    titles = []
+#     tracks = []
+#     titles = []
 
-    for item in playlists:
-        response = spotify.playlist_items(item,
-                                    fields='items.track.id,, items.track.name,total',
-                                    additional_types=['track'])
-        for track in response['items']:
-            try:
-                tracks.append(track['track']['id'])
-                titles.append(track['track']['name'])
-            except(TypeError):
-                continue
+#     for item in playlists:
+#         response = spotify.playlist_items(item,
+#                                     fields='items.track.id,, items.track.name,total',
+#                                     additional_types=['track'])
+#         for track in response['items']:
+#             try:
+#                 tracks.append(track['track']['id'])
+#                 titles.append(track['track']['name'])
+#             except(TypeError):
+#                 continue
 
 
-    start_batch = 0
-    batch_size = 100
-    end_at = len(tracks) - 1
+#     start_batch = 0
+#     batch_size = 100
+#     end_at = len(tracks) - 1
 
-    while (start_batch < end_at):
-        end_batch = start_batch + batch_size
-        if end_batch > end_at:
-            end_batch = end_at
+#     while (start_batch < end_at):
+#         end_batch = start_batch + batch_size
+#         if end_batch > end_at:
+#             end_batch = end_at
 
-        track_ids = tracks[start_batch:end_batch]
-        track_info = spotify.audio_features(track_ids)
+#         track_ids = tracks[start_batch:end_batch]
+#         track_info = spotify.audio_features(track_ids)
 
-        for i in range(len(track_info)):
-            try:
-                track = track_info[i]
-                acousticness = track['acousticness']
-                track_id = track['id']
-                danceability = track['danceability']
-                duration_ms = track['duration_ms']
-                energy = track['energy']
-                instrumentalness = track['instrumentalness']
-                key = track['key']
-                liveness = track['liveness']
-                loudness = track['loudness']
-                mode = track['mode']
-                name = titles[start_batch + i]
-                speechiness = track['speechiness']
-                tempo = track['tempo']
-                valence = track['valence']
-                mood = emotion
-            except(TypeError):
-                continue
+#         for i in range(len(track_info)):
+#             try:
+#                 track = track_info[i]
+#                 acousticness = track['acousticness']
+#                 track_id = track['id']
+#                 danceability = track['danceability']
+#                 duration_ms = track['duration_ms']
+#                 energy = track['energy']
+#                 instrumentalness = track['instrumentalness']
+#                 key = track['key']
+#                 liveness = track['liveness']
+#                 loudness = track['loudness']
+#                 mode = track['mode']
+#                 name = titles[start_batch + i]
+#                 speechiness = track['speechiness']
+#                 tempo = track['tempo']
+#                 valence = track['valence']
+#                 mood = emotion
+#             except(TypeError):
+#                 continue
 
 
         
-            new_track = crud.create_track(acousticness, 
-                                    danceability, 
-                                    duration_ms, 
-                                    energy,
-                                    track_id,
-                                    instrumentalness,
-                                    key,
-                                    liveness,
-                                    loudness,
-                                    mode,
-                                    name,
-                                    speechiness,
-                                    tempo,
-                                    valence,
-                                    mood
-                                    )
+#             new_track = crud.create_track(acousticness, 
+#                                     danceability, 
+#                                     duration_ms, 
+#                                     energy,
+#                                     track_id,
+#                                     instrumentalness,
+#                                     key,
+#                                     liveness,
+#                                     loudness,
+#                                     mode,
+#                                     name,
+#                                     speechiness,
+#                                     tempo,
+#                                     valence,
+#                                     mood
+#                                     )
 
-        start_batch += batch_size
-        time.sleep(1)
+#         start_batch += batch_size
+#         time.sleep(1)
+
+weathers = {
+    "Thunderstorm" : ['angry','excited', 'suspense'],
+    "Drizzle" : ['chill','mellow','melancholy'],
+    "Rain" :['realx', 'sad', 'chill'],
+    "Snow" : ['calm', 'serene', 'peaceful'],
+    "Mist" : ['pensive', 'mellow', 'uplift'],
+    "Smoke" : ['pensive', 'suspense'],
+    "Haze" :['uplift', 'sad'],
+    "Fog" : ['calm', 'alone', 'peaceful'],
+    "Sand" : ['suspense'],
+    "Dust" : ['pensive', 'melancholy'],
+    "Ash" : ['uplift', 'alone', 'sad' ],
+    "Squall" : ['pumped', 'excite'],
+    "Tornado" : ['excited', 'dance'],
+    "Clear" : ['happy', 'pumped', 'party', 'dance' ],
+    "Clouds" : ['happy', 'relax']
+    }
+
+for weather in weathers:
+    weather = weather
+    moods = (weathers[weather])
+
+    for mood in moods:
+
+        weather = weather
+        mood = mood
+
+        new_weather_mood = crud.create_weather_mood(weather, mood)
+
+    
+
+
 
 
 
