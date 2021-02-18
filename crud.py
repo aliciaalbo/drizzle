@@ -1,7 +1,6 @@
 from model import db, connect_to_db, Track, PlaylistTracks, User, WeatherMood
 from random import choice
 
-
 def create_track(acoutsicness, 
                  danceability, 
                  duration_ms, 
@@ -65,21 +64,34 @@ def create_weather_mood(weather, mood):
     
     return weather_mood
 
-# def create_playlist(moods):
-#     """generate playlist of 20 random tracks based on mood input"""
-#     playlist_choice = []
-#     for mood in moods:
-#         mood_tracks = db.session.query(Track.track_id).filter(Track.mood==mood).all()
+def get_mood(weather):
+    """gets list of moods associated with weather"""
+    
+    results =  db.session.query(WeatherMood.mood).filter(WeatherMood.weather_condition == weather).all()
+    moods = [i[0] for i in results]
+    return moods
 
-#         results = [i[0] for i in mood_tracks]
-#         playlist_choice.extend(results)
 
-#     playlist = set()
-#     # try/except for edge case of <20 songs
-#     while len(playlist) < 21:
-#         playlist.add(choice(playlist_choice))
+def create_playlist(moods):
+    """generate playlist of 20 random tracks based on mood input"""
+    playlist_choice = []
+    for mood in moods:
+        mood_tracks = db.session.query(Track.track_id).filter(Track.mood==mood).all()
 
-#     return playlist
+        results = [i[0] for i in mood_tracks]
+        playlist_choice.extend(results)
+
+    playlist = set()
+    # try/except for edge case of <20 songs
+    while len(playlist) < 21:
+        playlist.add(choice(playlist_choice))
+
+    songs = []
+    for trackid in playlist:
+        title = db.session.query(Track.name).filter(Track.track_id==trackid).first()
+        songs.append({ "trackid":str(trackid), "title":str(title) })
+
+    return songs
 
 
 def get_user_by_email(email):
