@@ -5,7 +5,7 @@ function showPlaylist(props) {
     <ul>
       {props.playlist.map((song) => {
         return <li key={song.trackid}>{song.title}</li>
-      })};
+      })}
     </ul>
   )
 }

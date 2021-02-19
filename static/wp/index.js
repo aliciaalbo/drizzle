@@ -4,20 +4,27 @@ import HelloWorld from "./HelloWorld";
 import { Login } from "./loginForm";
 import ZipCodeSearch from "./zipCodeSearch";
 import Playlist from "./playlist";
+import PlaylistHeader from "./playlistHeader";
 
 function App(props) {
     const [zipcode, setZipcode] = useState("");
     const [playlist, setPlaylist] = useState([]);
+    const [weather, setWeather] = useState("");
+    const [city, setCity] = useState("");
+    const [icon, setIcon] = useState("");
 
     const fetchWeather = (zipcode) => {
         setZipcode(zipcode);
-      fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${encodeURIComponent(zipcode)},us&appid=`)
+      fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${encodeURIComponent(zipcode)},us&appid=3d00fac31853cdfa5a9913bcd89a25bd`)
         .then((response) => {
             console.log("------------",response);
           return response.json();
         })
         .then((data) => {
-            console.log("%%%%%%%%%%%%%%%%%%%", data)
+            setWeather(data.weather[0].main);
+            setCity(data.name);
+            setIcon(data.weather[0].icon);
+            console.log("%%%%%%%%%%%%%%%%%%%", weather)
           // pass weather to python get playlist back
           fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
             .then((res) => res.json())
@@ -47,6 +54,7 @@ function App(props) {
         <section>
             <ZipCodeSearch fetchWeather={fetchWeather} />
             <Playlist playlist={playlist} />
+            <PlaylistHeader weather={weather} city={city} icon={icon}/>
         </section>
     );
     

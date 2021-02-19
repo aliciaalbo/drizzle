@@ -89,7 +89,8 @@ def create_playlist(moods):
     songs = []
     for trackid in playlist:
         title = db.session.query(Track.name).filter(Track.track_id==trackid).first()
-        songs.append({ "trackid":str(trackid), "title":str(title) })
+
+        songs.append({ "trackid":str(trackid), "title":title[0] })
 
     return songs
 
