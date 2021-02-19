@@ -15,7 +15,8 @@ def create_track(acoutsicness,
                  speechiness,
                  tempo,
                  valence,
-                 mood
+                 mood,
+                 artist
                  ):
 
     track = Track(acoutsicness = acoutsicness, 
@@ -32,7 +33,8 @@ def create_track(acoutsicness,
                  speechiness = speechiness,
                  tempo = tempo,
                  valence = valence,
-                 mood = mood
+                 mood = mood,
+                 artist = artist
                  )
 
     db.session.add(track)
@@ -89,8 +91,9 @@ def create_playlist(moods):
     songs = []
     for trackid in playlist:
         title = db.session.query(Track.name).filter(Track.track_id==trackid).first()
+        artist = db.session.query(Track.artist).filter(Track.track_id==trackid).first()
 
-        songs.append({ "trackid":str(trackid), "title":title[0] })
+        songs.append({ "trackid":str(trackid), "title":title[0], "artist":artist[0] })
 
     return songs
 
@@ -102,18 +105,18 @@ def get_user_by_email(email):
 
 
 
-def create_playlist_id(user_id, weather, date):
-    """creates a playlist for a user"""
+# def create_playlist_id(user_id, weather, date):
+#     """creates a playlist for a user"""
 
-    playlist = UserPlaylist(user_id = user_id,
-                            weather = weather, 
-                            date = date)
+#     playlist = UserPlaylist(user_id = user_id,
+#                             weather = weather, 
+#                             date = date)
 
-    db.session.add(playlist)
-    db.session.commit()
+#     db.session.add(playlist)
+#     db.session.commit()
 
-    playlist_id = playlist.playlist_id
-    return playlist_id
+#     playlist_id = playlist.playlist_id
+#     return playlist_id
 
 
 ### this needs work... may do tables differently 

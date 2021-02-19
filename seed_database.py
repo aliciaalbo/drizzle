@@ -28,86 +28,105 @@ spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 # playlist_emotions = ['happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
 
 # second pass
-# playlist_emotions = ['chill', 'party', 'dance', 'mellow', 'pensive'
+playlist_emotions = ['chill', 'party', 'dance', 'mellow', 'happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
+
+# 'pensive' causing a problem
+
+# playlist_emotions = ['chill']
+for emotion in playlist_emotions:
+
+    emotion_playlists = spotify.search(emotion, type="playlist")
+    playlists = []
+
+    for i, item in enumerate(emotion_playlists['playlists']['items']):
+        playlists.append(item['id'])
+
+    tracks = []
+    titles = []
+    artists = []
 
 
-# for emotion in playlist_emotions:
+    for item in playlists:
+        response = spotify.playlist_items(item,
+                                    fields='items.track.id,items.track.name,items.track.artists[0].name,total',
+                                    additional_types=['track'])
+        for track in response['items']:
+            try:
+                tracks.append(track['track']['id'])
+                titles.append(track['track']['name'])
+                artist_name = ''
+                for artist in track['track']['artists']:
+                    # print(artist)
+                    # print(artist['name'])
+                    # try:
+                    if artist_name == '':
+                        # print(artist['name'])
+                        artist_name = artist['name']   
+                    else:
+                        artist_name = artist_name + ', ' + artist['name']
+                artists.append(artist_name)
+                # print(artists)
+                        # artists.append(artist['name'])
+            except(TypeError):
+                continue
 
-#     emotion_playlists = spotify.search(emotion, type="playlist")
-#     playlists = []
 
-#     for i, item in enumerate(emotion_playlists['playlists']['items']):
-#         playlists.append(item['id'])
+    start_batch = 0
+    batch_size = 100
+    end_at = len(tracks) - 1
 
-#     tracks = []
-#     titles = []
+    while (start_batch < end_at):
+        end_batch = start_batch + batch_size
+        if end_batch > end_at:
+            end_batch = end_at
 
-#     for item in playlists:
-#         response = spotify.playlist_items(item,
-#                                     fields='items.track.id,, items.track.name,total',
-#                                     additional_types=['track'])
-#         for track in response['items']:
-#             try:
-#                 tracks.append(track['track']['id'])
-#                 titles.append(track['track']['name'])
-#             except(TypeError):
-#                 continue
+        track_ids = tracks[start_batch:end_batch]
+        track_info = spotify.audio_features(track_ids)
 
-
-#     start_batch = 0
-#     batch_size = 100
-#     end_at = len(tracks) - 1
-
-#     while (start_batch < end_at):
-#         end_batch = start_batch + batch_size
-#         if end_batch > end_at:
-#             end_batch = end_at
-
-#         track_ids = tracks[start_batch:end_batch]
-#         track_info = spotify.audio_features(track_ids)
-
-#         for i in range(len(track_info)):
-#             try:
-#                 track = track_info[i]
-#                 acousticness = track['acousticness']
-#                 track_id = track['id']
-#                 danceability = track['danceability']
-#                 duration_ms = track['duration_ms']
-#                 energy = track['energy']
-#                 instrumentalness = track['instrumentalness']
-#                 key = track['key']
-#                 liveness = track['liveness']
-#                 loudness = track['loudness']
-#                 mode = track['mode']
-#                 name = titles[start_batch + i]
-#                 speechiness = track['speechiness']
-#                 tempo = track['tempo']
-#                 valence = track['valence']
-#                 mood = emotion
-#             except(TypeError):
-#                 continue
+        for i in range(len(track_info)):
+            try:
+                track = track_info[i]
+                acousticness = track['acousticness']
+                track_id = track['id']
+                danceability = track['danceability']
+                duration_ms = track['duration_ms']
+                energy = track['energy']
+                instrumentalness = track['instrumentalness']
+                key = track['key']
+                liveness = track['liveness']
+                loudness = track['loudness']
+                mode = track['mode']
+                name = titles[start_batch + i]
+                speechiness = track['speechiness']
+                tempo = track['tempo']
+                valence = track['valence']
+                mood = emotion
+                artist = artists[start_batch + i]
+            except(TypeError):
+                continue
 
 
         
-#             new_track = crud.create_track(acousticness, 
-#                                     danceability, 
-#                                     duration_ms, 
-#                                     energy,
-#                                     track_id,
-#                                     instrumentalness,
-#                                     key,
-#                                     liveness,
-#                                     loudness,
-#                                     mode,
-#                                     name,
-#                                     speechiness,
-#                                     tempo,
-#                                     valence,
-#                                     mood
-#                                     )
+            new_track = crud.create_track(acousticness, 
+                                    danceability, 
+                                    duration_ms, 
+                                    energy,
+                                    track_id,
+                                    instrumentalness,
+                                    key,
+                                    liveness,
+                                    loudness,
+                                    mode,
+                                    name,
+                                    speechiness,
+                                    tempo,
+                                    valence,
+                                    mood, 
+                                    artist
+                                    )
 
-#         start_batch += batch_size
-#         time.sleep(1)
+        start_batch += batch_size
+        time.sleep(1)
 
 weathers = {
     "Thunderstorm" : ['angry','excited', 'suspense'],
