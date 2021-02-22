@@ -5,6 +5,7 @@ import { Login } from "./loginForm";
 import ZipCodeSearch from "./zipCodeSearch";
 import Playlist from "./playlist";
 import PlaylistHeader from "./playlistHeader";
+import Reroll from "./reroll";
 
 function App(props) {
     const [zipcode, setZipcode] = useState("");
@@ -15,6 +16,7 @@ function App(props) {
 
     const fetchWeather = (zipcode) => {
         setZipcode(zipcode);
+        // key = process.env.REACT_APP_WEATHER_API_KEY;
       fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${encodeURIComponent(zipcode)},us&appid=3d00fac31853cdfa5a9913bcd89a25bd`)
         .then((response) => {
             console.log("------------",response);
@@ -40,21 +42,15 @@ function App(props) {
         });
     }
 
-    // const buildPlaylist = (pl)
-        // letsetWeather(weather);
-
-    //     .then((result) => {console.log(result); return result})
-    // .then((result) => fetch(`/patients/${result.patientid}`))
-    // .then((response) => response.json())
-    // .then((result) => {console.log(result); return result})
-    // .then((result) => setPatient(result))
 
     console.log("****",playlist)
     return (
         <section>
             <ZipCodeSearch fetchWeather={fetchWeather} />
-            <Playlist playlist={playlist} />
             <PlaylistHeader weather={weather} city={city} icon={icon}/>
+            <Playlist playlist={playlist} />
+            <Reroll fetchWeather={fetchWeather} zipcode={zipcode} />
+            <Player />
         </section>
     );
     

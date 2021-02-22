@@ -65,6 +65,8 @@ def parse_api():
         songs = crud.create_playlist(moods)
         print(songs)
         return jsonify(songs)
+
+
         
     #return redirect('/')
 

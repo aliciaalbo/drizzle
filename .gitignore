@@ -4,3 +4,4 @@ _pycache_/
 import.py
 data.csv
 *.sql
+.env

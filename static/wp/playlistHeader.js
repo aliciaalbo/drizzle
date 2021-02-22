@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 function showConditions(props) {
     console.log(props.weather)
     let url=`http://openweathermap.org/img/wn/${props.icon}@2x.png`
+
   return(
     <div>
         <div>
@@ -16,6 +17,8 @@ function showConditions(props) {
         </div>
     </div>
   )
+    
+  
 }
 
 export default showConditions
