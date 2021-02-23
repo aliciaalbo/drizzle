@@ -6,6 +6,7 @@ import ZipCodeSearch from "./zipCodeSearch";
 import Playlist from "./playlist";
 import PlaylistHeader from "./playlistHeader";
 import Reroll from "./reroll";
+import Save from "./save";
 
 function App(props) {
     const [zipcode, setZipcode] = useState("");
@@ -42,15 +43,13 @@ function App(props) {
         });
     }
 
-
-    console.log("****",playlist)
     return (
         <section>
             <ZipCodeSearch fetchWeather={fetchWeather} />
             <PlaylistHeader weather={weather} city={city} icon={icon}/>
             <Playlist playlist={playlist} />
             <Reroll fetchWeather={fetchWeather} zipcode={zipcode} />
-            <Player />
+            <Save />
         </section>
     );
     
