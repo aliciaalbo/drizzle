@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 
-function ZipCodeSearch({ fetchWeather }) {
- const [zipcode, setZipcode] = useState();
+function ZipCodeSearch(props) {
+// const [zipcode, setZipcode] = useState();
 
   //  function handleSubmit(e) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(e.target.zipcode.value);
-    fetchWeather(e.target.zipcode.value);
+    props.fetchWeather(e.target.zipcode.value);
  //   setZipcode(e.target.zipcode.value);
   };
 
   return (
       <form onSubmit={e => { handleSubmit(e) }}>
-        Zip code: <input type="text" name="zipcode" value={zipcode} required /> <input type="submit" /> 
+        Zip code: <input type="text" name="zipcode" defaultValue={props.zipcode} required /> <input type="submit" /> 
       </form>
   );
 }

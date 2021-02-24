@@ -42,6 +42,8 @@ def create_track(acoutsicness,
 
     return track
 
+
+# add user id (can grab from spotify response I think), remove fname, lname
 def create_user(email, password, fname, lname):
     """add new user to db"""
 
@@ -96,6 +98,10 @@ def create_playlist(moods):
         songs.append({ "trackid":str(trackid), "title":title[0], "artist":artist[0] })
 
     return songs
+
+# def get_spotify_credentials(code):
+#     """submits authorization code to spotify to get token and user email
+
 
 
 def get_user_by_email(email):

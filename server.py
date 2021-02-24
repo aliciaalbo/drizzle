@@ -11,6 +11,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def show_homepage():
     """show homepage"""
+
     return render_template('homepage.html')
 
 # @app.route('/login', methods=["POST"])
@@ -67,8 +68,19 @@ def parse_api():
         return jsonify(songs)
 
 
+
         
     #return redirect('/')
+
+@app.route('/callback')
+def get_email_and_token():
+    code = request.args.get('code')
+    print(code)
+
+    token = crud.get_spotify_credentials(code)
+
+
+    return token
 
 if __name__ == '__main__':
     connect_to_db(app)

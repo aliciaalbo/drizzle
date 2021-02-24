@@ -1,19 +1,29 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import useStickyState from "./useStickyState";
 import HelloWorld from "./HelloWorld";
 import { Login } from "./loginForm";
 import ZipCodeSearch from "./zipCodeSearch";
 import Playlist from "./playlist";
 import PlaylistHeader from "./playlistHeader";
 import Reroll from "./reroll";
-import Save from "./save";
+import SpotifyLogin from "./spotifylogin";
 
 function App(props) {
+    /*
     const [zipcode, setZipcode] = useState("");
     const [playlist, setPlaylist] = useState([]);
     const [weather, setWeather] = useState("");
     const [city, setCity] = useState("");
     const [icon, setIcon] = useState("");
+    const [token, setToken] = useState("");
+    */
+    const [zipcode, setZipcode] = useStickyState("", "zipcode");
+    const [playlist, setPlaylist] = useStickyState([], "playlist");
+    const [weather, setWeather] = useStickyState("", "weather");
+    const [city, setCity] = useStickyState("", "city");
+    const [icon, setIcon] = useStickyState("", "icon");
+    const [token, setToken] = useStickyState("", "token");
 
     const fetchWeather = (zipcode) => {
         setZipcode(zipcode);
@@ -45,11 +55,11 @@ function App(props) {
 
     return (
         <section>
-            <ZipCodeSearch fetchWeather={fetchWeather} />
+            <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} />
             <PlaylistHeader weather={weather} city={city} icon={icon}/>
             <Playlist playlist={playlist} />
             <Reroll fetchWeather={fetchWeather} zipcode={zipcode} />
-            <Save />
+            <SpotifyLogin />
         </section>
     );
     

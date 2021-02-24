@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+//import React, { useState } from 'react';
+import React from 'react';
 
 function Reroll(props) {
-    const [zipcode, setZipcode] = useState();
+//    const [zipcode, setZipcode] = useState();
 
      const handleClick = (e) => {
        e.preventDefault();
