@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function ZipCodeSearch(props) {
-// const [zipcode, setZipcode] = useState();
 
   //  function handleSubmit(e) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.zipcode.value);
     props.fetchWeather(e.target.zipcode.value);
- //   setZipcode(e.target.zipcode.value);
   };
 
   return (

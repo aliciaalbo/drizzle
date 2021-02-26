@@ -1,5 +1,9 @@
 from model import db, connect_to_db, Track, PlaylistTracks, User, WeatherMood
 from random import choice
+# from bottle import route, run, request
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+import os
 
 def create_track(acoutsicness, 
                  danceability, 
@@ -44,14 +48,39 @@ def create_track(acoutsicness,
 
 
 # add user id (can grab from spotify response I think), remove fname, lname
-def create_user(email, password, fname, lname):
-    """add new user to db"""
+def create_user(email, name, access_token, refresh_token):
+    """add new user to db and stores their tokens"""
 
     user = User(email = email,
-                password = password,
-                fname = fname,
-                lname = lname)
+                name = name,
+                access_token = access_token,
+                refresh_token = refresh_token)
     
+    db.session.add(user)
+    db.session.commit()
+
+    return user
+
+
+def get_user_by_email(email):
+    """Gets a user by email"""
+
+    return User.query.filter(User.email == email).first()
+
+def update_access_token(email, access_token):
+    """updates a user's spotify access token"""
+
+    user = User.query.filter(User.email == email).first()
+    user.access_token = access_token
+    db.session.add(user)
+    db.session.commit()
+
+    return user
+def update_refresh_token(email, refresh_token):
+    """updates a user's spotify access token"""
+
+    user = User.query.filter(User.email == email).first()
+    user.refresh_token = refresh_token
     db.session.add(user)
     db.session.commit()
 
@@ -74,7 +103,6 @@ def get_mood(weather):
     results =  db.session.query(WeatherMood.mood).filter(WeatherMood.weather_condition == weather).all()
     moods = [i[0] for i in results]
     return moods
-
 
 def create_playlist(moods):
     """generate playlist of 20 random tracks based on mood input"""
@@ -99,16 +127,75 @@ def create_playlist(moods):
 
     return songs
 
-# def get_spotify_credentials(code):
-#     """submits authorization code to spotify to get token and user email
+def get_spotify_token(code):
+    cid = os.environ['cid']
+    secret = os.environ['secret']
+    SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
+    SCOPE = 'user-read-currently-playing playlist-modify-private user-read-email'
 
+    # CacheDBHandler is a custom class you need to write to store and retrieve cache in the DB, in cachedb.py
+    auth_manager = SpotifyOAuth(cid, secret, SPOTIPY_REDIRECT_URI, scope=SCOPE, cache_path=None )
+    # ignore cache until we make it work
+    token_info = auth_manager.get_access_token(code, check_cache=False)
+    return token_info
 
+def get_spotify_credentials(code):
+    """submits authorization code to spotify to get token and user email"""
 
-def get_user_by_email(email):
-    """Gets a user by email"""
+    # https://github.com/plamere/spotipy/blob/master/spotipy/util.py
+    # http://www.acmesystems.it/python_httpd
 
-    return User.query.filter(User.email == email).first()
+    # query db for access
+    # check id fresh
+    # if yes save play list
 
+    cid = os.environ['cid']
+    secret = os.environ['secret']
+    SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
+    SCOPE = 'playlist-modify-private user-read-email'
+    CACHE = '.spotipyoauthcache'
+
+    # CacheDB is a custom class you need to make to store the cache in the DB
+    sp_oauth = oauth2.SpotifyOAuth(cid, secret, SPOTIPY_REDIRECT_URI, scope=SCOPE, cache_handler="CacheDB" )
+    #sp_oauth = oauth2.SpotifyPKCE(cid,SPOTIPY_REDIRECT_URI,scope=SCOPE,cache_handler="CacheDB")
+
+    """
+def index():
+    access_token = ""
+
+    token_info = sp_oauth.get_cached_token()
+
+    if token_info:
+        print("Found cached token!")
+        access_token = token_info['access_token']
+    else:
+        url = request.url
+        code = sp_oauth.parse_response_code(url)
+        if code != url:
+            print("Found Spotify auth code in Request URL! Trying to get valid access token...")
+            token_info = sp_oauth.get_access_token(code)
+            access_token = token_info['access_token']
+
+    if access_token:
+        print("Access token available! Trying to get user information...")
+        sp = spotipy.Spotify(access_token)
+        results = sp.current_user()
+        return results
+
+    else:
+        return htmlForLoginButton()
+
+def htmlForLoginButton():
+    auth_url = getSPOauthURI()
+    htmlLoginButton = "<a href='" + auth_url + "'>Login to Spotify</a>"
+    return htmlLoginButton
+
+def getSPOauthURI():
+    auth_url = sp_oauth.get_authorize_url()
+    return auth_url
+
+run(host='', port=8080)
+    """
 
 
 # def create_playlist_id(user_id, weather, date):

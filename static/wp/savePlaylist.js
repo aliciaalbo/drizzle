@@ -1,16 +1,16 @@
 import React from 'react';
 
-function Reroll(props) {
+function SavePlaylist(props) {
      const handleClick = (e) => {
        e.preventDefault();
-       props.fetchWeather(props.zipcode)
+       fetch(`/api?do=savePlaylist&playlist=${props.playlist}`)
 
      };
     return (
             <button onClick={e => { handleClick(e) }}>
-            I hate it
+            I love it keep it forever
         </button>
     )
 }
 
-export default Reroll;
+export default SavePlaylist;

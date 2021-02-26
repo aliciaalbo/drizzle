@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 
-function showPlaylist(props) {
+function ShowPlaylist(props) {
   return(
     <ul>
       {props.playlist.map((song) => {
         return <li key={song.trackid}>{song.title}, a song by: {song.artist}</li>
       })}
     </ul>
-
   )
 }
 
-export default showPlaylist
+export default ShowPlaylist;
 
-{/* 
+/* 
 function getPlaylist(buildPlaylist) {
   function ZipCodeSearch({ fetchWeather }) {
     const [zipcode, setZipcode] = useState();
@@ -27,6 +26,4 @@ function getPlaylist(buildPlaylist) {
      };
     return ;
   }
-  
-
-   */}
+   */

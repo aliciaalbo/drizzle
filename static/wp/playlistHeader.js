@@ -17,9 +17,6 @@ function showConditions(props) {
         </div>
     </div>
   )
-    
-  
 }
 
-export default showConditions
-
+export default showConditions;

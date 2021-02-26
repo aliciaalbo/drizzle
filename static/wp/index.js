@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import useStickyState from "./useStickyState";
-import HelloWorld from "./HelloWorld";
-import { Login } from "./loginForm";
+// import { Login } from "./loginForm";
 import ZipCodeSearch from "./zipCodeSearch";
-import Playlist from "./playlist";
+import ShowPlaylist from "./playlist";
 import PlaylistHeader from "./playlistHeader";
 import Reroll from "./reroll";
 import SpotifyLogin from "./spotifylogin";
+//import Spotify from "./app.js";
+//import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App(props) {
     /*
@@ -28,7 +29,8 @@ function App(props) {
     const fetchWeather = (zipcode) => {
         setZipcode(zipcode);
         // key = process.env.REACT_APP_WEATHER_API_KEY;
-      fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${encodeURIComponent(zipcode)},us&appid=3d00fac31853cdfa5a9913bcd89a25bd`)
+        //        fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${encodeURIComponent(zipcode)},us&appid=#######`)
+        fetch(`/api?do=getWeather&zip=${encodeURIComponent(zipcode)}`)
         .then((response) => {
             console.log("------------",response);
           return response.json();
@@ -37,7 +39,7 @@ function App(props) {
             setWeather(data.weather[0].main);
             setCity(data.name);
             setIcon(data.weather[0].icon);
-            console.log("%%%%%%%%%%%%%%%%%%%", weather)
+            console.log("%%%%%%%%%%%%%%%%%%%", weather);
           // pass weather to python get playlist back
           fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
             .then((res) => res.json())
@@ -52,17 +54,15 @@ function App(props) {
           console.log("ERROR: ",err);
         });
     }
-
     return (
         <section>
             <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} />
-            <PlaylistHeader weather={weather} city={city} icon={icon}/>
-            <Playlist playlist={playlist} />
-            <Reroll fetchWeather={fetchWeather} zipcode={zipcode} />
+            {zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon}/>:null}
+            {playlist ? <ShowPlaylist playlist={playlist} /> :null}
+            {zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}
             <SpotifyLogin />
         </section>
     );
-    
 }
 // ReactDOM.render(<HelloWorld />, document.getElementById("react-root"));
 // ReactDOM.render(<Login />, document.getElementById("login"));
