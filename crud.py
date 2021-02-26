@@ -46,9 +46,8 @@ def create_track(acoutsicness,
 
     return track
 
-
 # add user id (can grab from spotify response I think), remove fname, lname
-def create_user(email, name, spotify_id, access_token, refresh_token):
+def create_user(uuid, email, name, spotify_id, access_token, refresh_token):
     """add new user to db and stores their tokens"""
 
     user = User(email = email,
@@ -56,11 +55,26 @@ def create_user(email, name, spotify_id, access_token, refresh_token):
                 spotify_id = spotify_id,
                 access_token = access_token,
                 refresh_token = refresh_token)
-    
+
     db.session.add(user)
     db.session.commit()
 
     return user
+
+def logout(spotify_id):
+    """logs user out of spotify by deleting their tokens"""
+
+    user = User.query.filter(User.spotify_id == spotify_id).first()
+    user.access_token = ""
+    user.refresh_token = ""
+    db.session.add(user)
+    db.session.commit()
+
+    return user
+
+
+#def get_user_by_uuid(uuid):
+#    return User.query.filter(User.uuid == uuid).first()
 
 def get_user_by_access_token(access_token):
     return User.query.filter(User.access_token == access_token).first()

@@ -28,51 +28,14 @@ def show_homepage():
 
     return render_template('homepage.html')
 
-# @app.route('/login', methods=["POST"])
-# def log_in_user():
-#     """Logs user in."""
-
-#     email = request.form.get('email')
-#     password = request.form.get('password')
-
-#     user = crud.get_user_by_email(email)
-
-#     if user:
-#         if password == user.password:
-#             session['user'] = user.user_id
-#             flash("You logged in! Good job.")
-#         else:
-#             flash("Passwords don't match. Try again.")
-#     else:
-#         flash("User does not exist. Please create an account.")
-
-#     return redirect ('/')
-
-"""
-@app.route('/users', methods=["POST"])
-def create_new_user():
-    # Creates a new user.
-    email = request.form.get('email')
-    password = request.form.get('password')
-    confirm_password = request.form.get('confirm-password')
-    fname = request.form.get('fname')
-    lname = request.form.get('lname')
-
-    if crud.get_user_by_email(email): 
-        flash("An account with this email exists. Please Log In.")
-    else:
-        if password == confirm_password:
-            crud.create_user(email, password, fname, lname)
-            flash("You did it, please log in")
-    
-    return redirect('/')
-"""
 
 @app.route('/api')
 def parse_api():
     """catches and parses data from external api call and runs appropriate functions"""
     do = request.args.get('do')
-    if do == "zipcodeToPlaylist":
+    if do == "getToken":
+        return jsonify(session.get('access_token'))
+    elif do == "zipcodeToPlaylist":
         weather = request.args.get('weather')
         moods = crud.get_mood(weather)
         songs = crud.create_playlist(moods)
@@ -90,7 +53,12 @@ def parse_api():
         if (access_token):
             user = crud.get_user_by_access_token(access_token)
             sp = spotipy.Spotify(auth_manager=auth_manager)
+            print(sp)
+            
+            #token_info = sp.refresh_access_token(user.refresh_token)
+
             plist = sp.user_playlist_create(user.spotify_id, 'Weather mood')
+            print(plist)
             sp.playlist_add_items(plist['id'], trackids)
             print("Playlist added: ", plist['id'])
             return jsonify(plist['id'])
@@ -116,6 +84,8 @@ def get_email_and_token():
         name = spotify.me()["display_name"]
         spotify_id = spotify.me()["id"]
         access_token = token_info['access_token']
+        # set the access token in a session cookie so it will persist and can be grabbed by React through an API call
+        session['access_token'] = access_token
         refresh_token = token_info['refresh_token']
         if crud.get_user_by_email(email):
             # Do something to login.. send access token to react? 
@@ -126,10 +96,10 @@ def get_email_and_token():
             crud.create_user(email, name, spotify_id, access_token, refresh_token)
 
         # set the access token cookie for React
-        response = redirect('/', 302)
+        #response = redirect('/', 302)
         # secure=True only if using https, otherwise it won't set the cookie
-        response.set_cookie('access_cookie', access_token, secure=False, httponly=False)
-        return response
+        #response.set_cookie('access_cookie', access_token, secure=False, httponly=False)
+        #return response
 
     # email = sp.user(email)
     # pprint.pprint(email)

@@ -31,12 +31,29 @@ function App(props) {
     const [name, setName] = useStickyState("", "name");
     const [email, setEmail] = useStickyState("", "email");
 
+    // load the access token through Python's session if we can
+    if (!access_token) {
+      console.log('access token check');
+      fetch(`/api?do=getToken`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          setAccessToken(data);
+          console.log('access token set!');
+        }
+      })
+      .catch((err) => {
+        console.log("ERROR: ",err);
+      });
+    }
+    /*
     const [cookies, setCookie, removeCookie] = useCookies(['access_cookie']);
     // happens on first load after API callback
     if (cookies.access_cookie && access_token != cookies.access_cookie) {
       console.log('update access token', cookies.access_cookie);
       setAccessToken(cookies.access_cookie);
     }
+    */
 
     const fetchWeather = (zipcode) => {
       setZipcode(zipcode);
@@ -87,8 +104,6 @@ function App(props) {
     };
     */
 
-    //             <SavePlaylist playlist={playlist} access_token={access_token} />
-    //             <SavePlaylist savePlaylist={savePlaylist} playlist={playlist} access_token={access_token} />
     return (
         <section>
             <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} />
@@ -96,7 +111,7 @@ function App(props) {
             {playlist ? <ShowPlaylist playlist={playlist} /> :null}
             {zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}
             <SpotifyLogin />
-            <SavePlaylist playlist={playlist} access_token={access_token} />
+            {access_token ? <SavePlaylist playlist={playlist} access_token={access_token}  />: null}
         </section>
     );
 }

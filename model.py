@@ -85,11 +85,9 @@ class User(db.Model):
     email = db.Column(db.String)
     name = db.Column(db.String)
     spotify_id = db.Column(db.String)
-
     access_token = db.Column(db.String)
     refresh_token = db.Column(db.String)
-
-
+    #sess_uuid = db.Column(db.String)
 
 class UserPlaylist(db.Model):
     """stores user favorited playlists"""
