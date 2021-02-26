@@ -48,11 +48,12 @@ def create_track(acoutsicness,
 
 
 # add user id (can grab from spotify response I think), remove fname, lname
-def create_user(email, name, access_token, refresh_token):
+def create_user(email, name, spotify_id, access_token, refresh_token):
     """add new user to db and stores their tokens"""
 
     user = User(email = email,
                 name = name,
+                spotify_id = spotify_id,
                 access_token = access_token,
                 refresh_token = refresh_token)
     
@@ -61,11 +62,20 @@ def create_user(email, name, access_token, refresh_token):
 
     return user
 
+def get_user_by_access_token(access_token):
+    return User.query.filter(User.access_token == access_token).first()
 
 def get_user_by_email(email):
     """Gets a user by email"""
-
     return User.query.filter(User.email == email).first()
+
+def get_access_token_by_email(email):
+    """retrieves access token from db by email lookup"""
+    return User.query(User.access_token).filter(User.email == email)
+
+def get_refresh_token_by_email(email):
+    """retrieves access token from db by email lookup"""
+    return User.query(User.refresh_token).filter(User.email == email)
 
 def update_access_token(email, access_token):
     """updates a user's spotify access token"""
@@ -76,6 +86,8 @@ def update_access_token(email, access_token):
     db.session.commit()
 
     return user
+
+
 def update_refresh_token(email, refresh_token):
     """updates a user's spotify access token"""
 
@@ -131,7 +143,7 @@ def get_spotify_token(code):
     cid = os.environ['cid']
     secret = os.environ['secret']
     SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
-    SCOPE = 'user-read-currently-playing playlist-modify-private user-read-email'
+    SCOPE = 'user-read-playback-state user-read-currently-playing playlist-modify-public user-read-email'
 
     # CacheDBHandler is a custom class you need to write to store and retrieve cache in the DB, in cachedb.py
     auth_manager = SpotifyOAuth(cid, secret, SPOTIPY_REDIRECT_URI, scope=SCOPE, cache_path=None )
