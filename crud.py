@@ -61,16 +61,18 @@ def create_user(uuid, email, name, spotify_id, access_token, refresh_token):
 
     return user
 
-def logout(spotify_id):
+def logout(access_token):
     """logs user out of spotify by deleting their tokens"""
-
-    user = User.query.filter(User.spotify_id == spotify_id).first()
-    user.access_token = ""
-    user.refresh_token = ""
-    db.session.add(user)
-    db.session.commit()
-
-    return user
+    if (access_token):
+        user = get_user_by_access_token(access_token)
+        user.access_token = ""
+        user.refresh_token = ""
+        update_access_token(user.email, "")
+        update_refresh_token(user.email, "")
+        db.session.add(user)
+        db.session.commit()
+        return "Logout successful"
+    return "Could not logout, no access token"
 
 
 #def get_user_by_uuid(uuid):

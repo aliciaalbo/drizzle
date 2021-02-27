@@ -9,6 +9,7 @@ import PlaylistHeader from "./playlistHeader";
 import Reroll from "./reroll";
 import SavePlaylist from "./savePlaylist";
 import SpotifyLogin from "./spotifylogin";
+import Logout from "./logout";
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -27,18 +28,23 @@ function App(props) {
     const [city, setCity] = useStickyState("", "city");
     const [icon, setIcon] = useStickyState("", "icon");
     const [access_token, setAccessToken] = useStickyState("", "access_token");
-    const [refresh_token, setRefreshToken] = useStickyState("", "refresh_token");
+    // const [refresh_token, setRefreshToken] = useStickyState("", "refresh_token");
     const [name, setName] = useStickyState("", "name");
     const [email, setEmail] = useStickyState("", "email");
+    // const [isLoggedIn, setIsLoggedIn] = useStickyState( )
 
-    // load the access token through Python's session if we can
+    // load the access token through Python's session if can
     if (!access_token) {
       console.log('access token check');
-      fetch(`/api?do=getToken`)
+      fetch(`/api?do=getInfo`)
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          setAccessToken(data);
+          console.log(data)
+          setAccessToken(data.access_token);
+          setName(data.name);
+          setEmail(data.email);
+        
           console.log('access token set!');
         }
       })
@@ -87,6 +93,20 @@ function App(props) {
       });
     };
 
+    const logoutUser = (access_token) => {
+      if (access_token) {
+        fetch(`/api?do=logout&access_token=${encodeURIComponent(access_token)}`)
+        .then((res) => {
+          console.log('logout attempt')
+          setAccessToken("");
+          setName("");
+          setEmail("");
+        })
+        .catch((err) => {
+            console.log("ERROR: ",err);
+        });
+      }
+    };
     /*
     const Login = () => {
       fetch(`/api?do=login&playlist=${playlist}`)
@@ -110,8 +130,9 @@ function App(props) {
             {zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon}/>:null}
             {playlist ? <ShowPlaylist playlist={playlist} /> :null}
             {zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}
-            <SpotifyLogin />
-            {access_token ? <SavePlaylist playlist={playlist} access_token={access_token}  />: null}
+            {access_token ? null : <SpotifyLogin />}
+            {playlist ? <SavePlaylist playlist={playlist} access_token={access_token}  />: null}
+            {access_token ? <Logout logoutUser={logoutUser} access_token={access_token} /> : null}
         </section>
     );
 }

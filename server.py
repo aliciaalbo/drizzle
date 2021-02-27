@@ -33,8 +33,12 @@ def show_homepage():
 def parse_api():
     """catches and parses data from external api call and runs appropriate functions"""
     do = request.args.get('do')
-    if do == "getToken":
-        return jsonify(session.get('access_token'))
+    if do == "getInfo":
+        access_token = session.get('access_token')
+        if (access_token):
+            user = crud.get_user_by_access_token(session.get('access_token'))
+            return jsonify({ 'access_token': access_token, 'email': user.email, 'name': user.name })
+        return jsonify({ 'access_token': "", 'email': "", 'name': "" })
     elif do == "zipcodeToPlaylist":
         weather = request.args.get('weather')
         moods = crud.get_mood(weather)
@@ -52,12 +56,12 @@ def parse_api():
         access_token = request.args.get('access_token')
         if (access_token):
             user = crud.get_user_by_access_token(access_token)
-            sp = spotipy.Spotify(auth_manager=auth_manager)
-            print(sp)
             
+            sp = spotipy.Spotify(auth_manager=auth_manager)            
             #token_info = sp.refresh_access_token(user.refresh_token)
-
-            plist = sp.user_playlist_create(user.spotify_id, 'Weather mood')
+#        token_info = auth_manager.get_access_token(request.args.get('code'), check_cache=False)
+#        spotify = spotipy.Spotify(auth_manager=auth_manager)
+            plist = sp.user_playlist_create(user.spotify_id, user.name)
             print(plist)
             sp.playlist_add_items(plist['id'], trackids)
             print("Playlist added: ", plist['id'])
@@ -70,7 +74,12 @@ def parse_api():
 
         # try:
         #     user_playlist_create(user, name, public=True, collaborative=False, description='')
-
+    elif do == "logout":
+        access_token = request.args.get('access_token')
+        session.clear()
+        if (access_token):
+            return crud.logout(access_token)
+        return "Could not logout, no access token"
 
     #return redirect('/')
 
@@ -83,10 +92,11 @@ def get_email_and_token():
         email = spotify.me()["email"]
         name = spotify.me()["display_name"]
         spotify_id = spotify.me()["id"]
+        refresh_token = token_info['refresh_token']
         access_token = token_info['access_token']
         # set the access token in a session cookie so it will persist and can be grabbed by React through an API call
         session['access_token'] = access_token
-        refresh_token = token_info['refresh_token']
+
         if crud.get_user_by_email(email):
             # Do something to login.. send access token to react? 
             # then if access toekn show save playlist buttn that isn't made yet
