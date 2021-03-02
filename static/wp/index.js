@@ -127,8 +127,8 @@ function App(props) {
     return (
         <section>
             <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} />
-            {zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon}/>:null}
-            {playlist ? <ShowPlaylist playlist={playlist} /> :null}
+            {zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}
+            {playlist ? <ShowPlaylist playlist={playlist} name={name} /> :null}
             {zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}
             {access_token ? null : <SpotifyLogin />}
             {playlist ? <SavePlaylist playlist={playlist} access_token={access_token}  />: null}

@@ -7,6 +7,9 @@ function showConditions(props) {
   return(
     <div>
         <div>
+            {props.username}'s {props.weather} {props.city} playlist
+        </div>
+        <div>
             {props.weather}
         </div>
         <div>
