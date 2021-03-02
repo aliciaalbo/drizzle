@@ -10,6 +10,7 @@ import Reroll from "./reroll";
 import SavePlaylist from "./savePlaylist";
 import SpotifyLogin from "./spotifylogin";
 import Logout from "./logout";
+import SpotifyPlayer from 'react-spotify-web-playback';
 // import Player from "./webplayer";
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -129,12 +130,13 @@ function App(props) {
         <section>
             <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} />
             {zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}
-            {playlist ? <ShowPlaylist playlist={playlist} name={name} /> :null}
+            {playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}
             {zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}
             {access_token ? null : <SpotifyLogin />}
-            {playlist ? <SavePlaylist playlist={playlist} access_token={access_token}  />: null}
+            {playlist.length ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}
             {access_token ? <Logout logoutUser={logoutUser} access_token={access_token} /> : null}
             {/* <Player /> */}
+            { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null}
         </section>
     );
 }

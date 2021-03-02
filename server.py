@@ -19,7 +19,12 @@ app.jinja_env.undefined = StrictUndefined
 cid = os.environ['cid']
 secret = os.environ['secret']
 SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
-SCOPE = 'user-read-playback-state user-read-currently-playing playlist-modify-public user-read-email'
+# to get account info for users: user-read-email
+# to save playlist: playlist-modify-public
+# to stream in player: streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state
+# to show the favorite button: user-library-read user-library-modify
+# also in there for some reason: user-read-currently-playing
+SCOPE = 'user-read-email playlist-modify-public streaming user-read-private user-read-playback-state user-modify-playback-state user-library-read user-library-modify user-read-currently-playing'
 auth_manager = SpotifyOAuth(cid, secret, SPOTIPY_REDIRECT_URI, scope=SCOPE, cache_path=None )
 
 @app.route('/')
@@ -54,6 +59,12 @@ def parse_api():
     elif do == "savePlaylist":
         trackids = request.args.get('trackids').split(",")
         access_token = request.args.get('access_token')
+        username = request.args.get('username')
+        weather = request.args.get('weather')
+        city = request.args.get('city')
+        playlist_name = f"{username}'s {weather} {city} Playlist"
+
+
         if (access_token):
             user = crud.get_user_by_access_token(access_token)
             
@@ -61,7 +72,7 @@ def parse_api():
             #token_info = sp.refresh_access_token(user.refresh_token)
 #        token_info = auth_manager.get_access_token(request.args.get('code'), check_cache=False)
 #        spotify = spotipy.Spotify(auth_manager=auth_manager)
-            plist = sp.user_playlist_create(user.spotify_id, user.name)
+            plist = sp.user_playlist_create(user.spotify_id, playlist_name)
             print(plist)
             sp.playlist_add_items(plist['id'], trackids)
             print("Playlist added: ", plist['id'])
