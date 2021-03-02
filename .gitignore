@@ -1,6 +1,6 @@
 secrets.sh
 env/
-_pycache_/
+__pycache__
 import.py
 data.csv
 *.sql

@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import Failure from "./flash_failure"
 import Success from "./flash_success"
+import Player from "./webplayer";
 
 // import FlashMessage from "react-flash-message";
 
@@ -20,6 +21,7 @@ function SavePlaylist(props) {
         })
         .catch((err) => {
             console.log("ERROR: ",err);
+            setisError(true)
         });
     };
     return (
@@ -29,6 +31,7 @@ function SavePlaylist(props) {
             </button>
             {pid ? <Success /> : null }
             {isError ? <Failure /> : null }
+            <Player pid={pid} />
         </section>
     )
 }

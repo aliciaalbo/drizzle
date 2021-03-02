@@ -10,6 +10,7 @@ import Reroll from "./reroll";
 import SavePlaylist from "./savePlaylist";
 import SpotifyLogin from "./spotifylogin";
 import Logout from "./logout";
+// import Player from "./webplayer";
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -133,6 +134,7 @@ function App(props) {
             {access_token ? null : <SpotifyLogin />}
             {playlist ? <SavePlaylist playlist={playlist} access_token={access_token}  />: null}
             {access_token ? <Logout logoutUser={logoutUser} access_token={access_token} /> : null}
+            {/* <Player /> */}
         </section>
     );
 }
