@@ -142,8 +142,8 @@ def create_playlist(moods):
         playlist_choice.extend(results)
 
     playlist = set()
-    # try/except for edge case of <20 songs
-    while len(playlist) < 21:
+    # try/except for edge case of <20 songs?
+    while len(playlist) < 20:
         playlist.add(choice(playlist_choice))
 
     songs = []

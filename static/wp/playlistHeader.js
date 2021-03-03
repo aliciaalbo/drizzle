@@ -6,9 +6,9 @@ function showConditions(props) {
 
   return(
     <div>
-        <div>
+        {props.name ? <div>
             {props.username}'s {props.weather} {props.city} playlist
-        </div>
+        </div> : null}
         <div>
             {props.weather}
         </div>

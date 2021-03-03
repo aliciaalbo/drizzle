@@ -56,6 +56,13 @@ def parse_api():
         weatherurl = 'https://api.openweathermap.org/data/2.5/weather?zip='+zipcode+',us&appid='+appid
         print(weatherurl)
         return dload.json(weatherurl)
+    elif do == "getWeatherLatLon":
+        appid = os.environ['appid']
+        lat = request.args.get('lat')
+        lon = request.args.get('lon')
+        weatherurl = 'https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid='+appid
+        print(weatherurl)
+        return dload.json(weatherurl)
     elif do == "savePlaylist":
         trackids = request.args.get('trackids').split(",")
         access_token = request.args.get('access_token')
