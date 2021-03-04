@@ -93,10 +93,10 @@ def parse_api():
         # try:
         #     user_playlist_create(user, name, public=True, collaborative=False, description='')
     elif do == "logout":
-        access_token = request.args.get('access_token')
+        email = request.args.get('email')
         session.clear()
-        if (access_token):
-            return crud.logout(access_token)
+        if (email):
+            return crud.logout(email)
         return "Could not logout, no access token"
 
     #return redirect('/')

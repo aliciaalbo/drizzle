@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function useStickyState(defaultValue, key) {
     // overrides the useState function to check if set in localstorage first

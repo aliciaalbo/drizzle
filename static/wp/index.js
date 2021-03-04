@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useCookies } from "react-cookie";
+//import { useCookies } from "react-cookie";
 import useStickyState from "./useStickyState";
 // import { Login } from "./loginForm";
 import ZipCodeSearch from "./zipCodeSearch";
@@ -12,63 +12,32 @@ import SpotifyLogin from "./spotifylogin";
 import Logout from "./logout";
 import LatLonSearch from "./latLon";
 import WebPlayer from "./webplayer";
+import EB from "./errorBoundary";
 //import SpotifyPlayer from 'react-spotify-web-playback';
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-function App(props) {
+function App() {
     const [zipcode, setZipcode] = useStickyState("", "zipcode");
     const [playlist, setPlaylist] = useStickyState([], "playlist");
     const [weather, setWeather] = useStickyState("", "weather");
     const [city, setCity] = useStickyState("", "city");
     const [icon, setIcon] = useStickyState("", "icon");
+    const [isReady, setIsReady] = useState("");
+    const [deviceId, setDeviceId] = useState("");  
     const [access_token, setAccessToken] = useStickyState("", "access_token");
+//    useEffect(() => {
+//      if (access_token) {
+        let spotplayer = WebPlayer({ access_token: access_token, isReady: isReady, setIsReady: setIsReady, setDeviceId: setDeviceId });
+        console.log('ppp',spotplayer);
+//      }
+//    }, [access_token, isReady]);
+
     // const [refresh_token, setRefreshToken] = useStickyState("", "refresh_token");
     const [name, setName] = useStickyState("", "name");
     const [email, setEmail] = useStickyState("", "email");
     const [lon, setLon] = useStickyState("", "lon");
     const [lat, setLat] = useStickyState("", "lat");
-    // not sticky, we want to load fresh
-    // let player = "";
-    //const [player, setPlayer] = useState("");
-    //let player = "";
-    //let isPlayer = false;
-    // const [isLoggedIn, setIsLoggedIn] = useStickyState( )
-
-    // window.onSpotifyWebPlaybackSDKReady = () => {
-    //   isPlayer = true;
-    // }
-
-    if (access_token) {
-      let playa = WebPlayer(access_token);
-      console.log('ppp',playa);
-    }
-
-    // React.useEffect(() => {
-    //   if (access_token) {
-    //     // runs once the script below is loaded
-    //     window.onSpotifyWebPlaybackSDKReady = () => {
-    //       player = new window.Spotify.Player({
-    //         name: 'Moody Playlist Web App',
-    //         volume: 1.0,
-    //         getOAuthToken: (cb) => {
-    //           console.log('at:',access_token);
-    //           // console.log('accessToken', localStorage.getItem('accessToken'));
-    //           // const token = localStorage.getItem('accessToken');
-    //           cb(access_token);
-    //         },
-    //       });
-    //     };
-    //   }
-    //   // script needs to be added dynamically within React so the
-    //   // window.onSpotifyWebPlaybackSDKReady function is immediately available to run
-    //   // once the spotify-player.js finishes loading
-    //   if (!window.Spotify) {
-    //     const scriptTag = document.createElement('script');
-    //     scriptTag.src = 'https://sdk.scdn.co/spotify-player.js';
-    //     document.head.appendChild(scriptTag);
-    //   }
-    // });
 
     // load the access token through Python's session if can
     if (!access_token) {
@@ -97,7 +66,6 @@ function App(props) {
       setAccessToken(cookies.access_cookie);
     }
     */
-
     const fetchWeather = (zipcode) => {
       setZipcode(zipcode);
       // key = process.env.REACT_APP_WEATHER_API_KEY;
@@ -157,9 +125,9 @@ function App(props) {
       });
     };
 
-    const logoutUser = (access_token) => {
-      if (access_token) {
-        fetch(`/api?do=logout&access_token=${encodeURIComponent(access_token)}`)
+    const logoutUser = (email) => {
+      if (email) {
+        fetch(`/api?do=logout&email=${encodeURIComponent(email)}`)
         .then((res) => {
           console.log('logout attempt')
           setAccessToken("");
@@ -190,14 +158,14 @@ function App(props) {
 
     return (
         <section>
-            <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} />
-            <LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} />
-            {zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}
-            {playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}
-            {zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}
-            {access_token ? null : <SpotifyLogin />}
-            {playlist.length ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}
-            {access_token ? <Logout logoutUser={logoutUser} access_token={access_token} /> : null}
+            <EB><ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /></EB>
+            <EB><LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} /></EB>
+            <EB>{zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
+            <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
+            <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
+            <EB>{access_token ? null : <SpotifyLogin />}</EB>
+            <EB>{playlist.length ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
+            <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : null}</EB>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}
             {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}

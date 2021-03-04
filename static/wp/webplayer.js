@@ -1,27 +1,30 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function WebPlayer(props) {
-  const [isReady, setIsReady] = useState(false);
-  const [deviceId, setDeviceId] = useState("");
-  const playerRef = useRef();
+  //const [onReady, setOnReady] = useState(null);
+  // not entirely sure how this works, but keeps the player from writing over itself
+  const playerRef = useRef(null);
+  console.log(props.deviceId);
+
+  // creates an instance of the player
   useEffect(() => {
+   if (props.access_token) {
     // already loaded, we are rolling a new token probably
     if (window.Spotify) {
-      playerRef.current = new Spotify.Player({
+      playerRef.current = new window.Spotify.Player({
         name: 'Moody Playlist Web App',
         volume: 1.0,
         getOAuthToken: cb => {
           cb(props.access_token);
         },
       });
-      setIsReady(true);
+      props.setIsReady(true);
+      console.log('reloading');
     }
 
-    // instantiate on script load
-    // const instantiatePlayer = (props.access_token) => {
-    //if (props.access_token) {
+    // this function is called by the Spotify script once it is dynamically loaded
     window.onSpotifyWebPlaybackSDKReady = () => {
-      playerRef.current = new Spotify.Player({
+      playerRef.current = new window.Spotify.Player({
         name: 'Moody Playlist Web App',
         volume: 1.0,
         getOAuthToken: (cb) => {
@@ -29,212 +32,51 @@ function WebPlayer(props) {
           cb(props.access_token);
         },
       });
-      setIsReady(true);
+      props.setIsReady(true);
+      //setOnReady(window.Spotify.PlaybackStateListener);
+      console.log('current set');
     };
 
-    // script needs to be added dynamically within React so the
-    // window.onSpotifyWebPlaybackSDKReady function is immediately available to run
-    // once the spotify-player.js finishes loading
+    // needs to be added dynamically within React so the window.onSpotifyWebPlaybackSDKReady
+    // function is read to be called by the spotify-player.js after loading
     if (!window.Spotify) {
       const scriptTag = document.createElement('script');
       scriptTag.src = 'https://sdk.scdn.co/spotify-player.js';
       document.head.appendChild(scriptTag);
+      console.log('load script');
     }
-
-    console.log('playa:',playerRef.current);
-  }, []);
-
-  const handleReady = useCallback(({ device_id: readyDeviceId }) => {
-    setDeviceId(readyDeviceId);
-    // if (onReady) {
-    //   onReady(deviceId);
-    // }
-  }, []);
-
-  // connect once ready
-  useEffect(() => {
-    if (isReady) {
-      playerRef.current.connect();
-    }
-  }, [isReady]);
+    console.log('player details:',playerRef);
+   }
+  }, [props.access_token]);
 
   // const handleReady = useCallback(({ device_id: readyDeviceId }) => {
   //   setDeviceId(readyDeviceId);
-  //   if (props.onReady) {
-  //     props.onReady(deviceId);
-  //   }
+  //   console.log('handleReady');
   // }, []);
 
-  // connect player once instantiated
+  // connect to Spotify once the player is created
   useEffect(() => {
     const player = playerRef.current;
-    if (isReady) {
-      player.addListener('account_error', accountError);
-      player.addListener('ready', handleReady);
-      player.addListener('initialization_error', accountError);
-      player.addListener('authentication_error', accountError);
-      player.addListener('not_ready', accountError);
-      player.addListener('player_state_changed', onPlayerStateChanged);
-
-      return () => {
-        player.removeListener('account_error', accountError);
-        player.removeListener('ready', handleReady);
-        player.removeListener('player_state_changed', onPlayerStateChanged);
-      };
-    }
-    return;
-  }, [isReady, onPlayerStateChanged]);
-
-    //     // Error handling
-    //     player.addListener('initialization_error', ({ message }) => { console.error(message); });
-    //     player.addListener('authentication_error', ({ message }) => { console.error(message); });
-    //     player.addListener('account_error', ({ message }) => { console.error(message); });
-    //     player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-    //     // Playback status updates
-    //     player.addListener('player_state_changed', state => { console.log(state); });
-
-    //     // Ready
-    //     player.addListener('ready', ({ device_id }) => {
-    //       setDeviceId(device_id);
-    //       console.log('Ready with Device ID', device_id);
-    //     });
-
-    //     // Not Ready
-    //     player.addListener('not_ready', ({ device_id }) => {
-    //       console.log('Device ID has gone offline', device_id);
-    //     });
-    //     return;
-    //   },
-    //   [isReady, onPlayerStateChanged],
-    // );
-        // finally, connect the player
-//        playerRef.current.connect();
-// }
-//     }, [isReady],
-//   );
-
-  // React.useEffect(
-  //   () => {
-  //     const player = playerRef.current;
-  //     if (isReady) {
-  //       player.addListener('account_error', accountError);
-  //       player.addListener('ready', handleReady);
-  //       player.addListener('initialization_error', accountError);
-  //       player.addListener('authentication_error', accountError);
-  //       player.addListener('not_ready', accountError);
-  //       player.addListener('player_state_changed', onPlayerStateChanged);
-
-  //       return () => {
-  //         player.removeListener('account_error', accountError);
-  //         player.removeListener('ready', handleReady);
-  //         player.removeListener('player_state_changed', onPlayerStateChanged);
-  //       };
-  //     }
-
-  //     return;
-  //   },
-  //   [isReady, onPlayerStateChanged],
-  // );
+    // an async IIFE to immediate run a function, needed for await
+    (async () => {
+      if (props.isReady) {
+        player.addListener('ready', ({ device_id: readyDeviceId }) => {
+          props.setDeviceId(readyDeviceId);
+          console.log('rdy deviceid', readyDeviceId);
+        });
+        player.addListener('player_state_changed', state => { console.log('state changed:',state); });
+        // now connect
+        let connected = await playerRef.current.connect();
+        if (connected) {
+          console.log('connected', playerRef.current);
+        }
+      }
+    })();
+  }, [props.isReady]);
 
   return {
-    player: playerRef.current,
-    deviceId: deviceId,
-    isReady
+    player: playerRef.current
   };
-};
+}
 
 export default WebPlayer;
-
-// function WebPlayer(props) {
-//   React.useEffect(() => {
-//     if (props.access_token) {
-//       window.onSpotifyWebPlaybackSDKReady = () => {
-//         props.player = new window.Spotify.Player({
-//           name: 'Moody Playlist Web App',
-//           volume: 1.0,
-//           getOAuthToken: (cb) => {
-//             console.log('at:',access_token);
-//             // console.log('accessToken', localStorage.getItem('accessToken'));
-//             // const token = localStorage.getItem('accessToken');
-//             cb(props.access_token);
-//           },
-//         });
-//       };
-//       if (!window.Spotify) {
-//         const scriptTag = document.createElement('script');
-//         scriptTag.src = 'https://sdk.scdn.co/spotify-player.js';
-//         document.head.appendChild(scriptTag);
-//       }
-//     }
-//     console.log('in use effect');
-//   });
-
-//   return (
-//     <div>Playa</div>
-//   );
-// };
-
-
-// // import React from 'react';
-// // import useSpotifyWebPlaybackSdk from "use-spotify-web-playback-sdk";
-
-// // function WebPlayer(props) {
-// //   const {
-// //     // Script: WebPlaybackSdkScript,
-// //     deviceId,
-// //     connect: connectWebPlaybackSdk,
-// //     player, 
-// //     isReady,
-// //   } = useSpotifyWebPlaybackSdk({
-// //     name: 'Moody Playlist Web App',
-// //     volume: 1.0,
-// //     getOAuthToken: () => Promise.resolve(props.access_token),
-// //     onPlayerStateChanged: (playerState) => {
-// //       console.log('player state changed:', playerState);
-// //     }
-// //   });
-// //   React.useEffect(
-// //     () => {
-// //       if (isReady) {
-// //         connect();
-// //       }
-// //     },
-// //     [isReady],
-// //   );
-
-// //   return (
-// //     <WebPlayer>
-// //       <div>Any children</div>
-// //     </WebPlayer>
-// //   );
-// // };
-
-// // export default WebPlayer;
-//   // const player = new window.Spotify.Player({
-//   //     name: 'Moody Playlist Web App',
-//   //     volume: 1.0,
-//   //     getOAuthToken: cb => { cb(props.access_token); }
-//   //   });
-  
-//   //   // Error handling
-//   //   player.addListener('initialization_error', ({ message }) => { console.error(message); });
-//   //   player.addListener('authentication_error', ({ message }) => { console.error(message); });
-//   //   player.addListener('account_error', ({ message }) => { console.error(message); });
-//   //   player.addListener('playback_error', ({ message }) => { console.error(message); });
-  
-//   //   // Playback status updates
-//   //   player.addListener('player_state_changed', state => { console.log(state); });
-  
-//   //   // Ready
-//   //   player.addListener('ready', ({ device_id }) => {
-//   //     console.log('Ready with Device ID', device_id);
-//   //   });
-  
-//   //   // Not Ready
-//   //   player.addListener('not_ready', ({ device_id }) => {
-//   //     console.log('Device ID has gone offline', device_id);
-//   //   });
-  
-//   //   // Connect to the player!
-//   //   player.connect();

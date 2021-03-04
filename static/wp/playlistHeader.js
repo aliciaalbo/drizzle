@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function showConditions(props) {
     console.log(props.weather)
@@ -7,7 +7,7 @@ function showConditions(props) {
   return(
     <div>
         {props.name ? <div>
-            {props.username}'s {props.weather} {props.city} playlist
+            {props.username}&apos;s {props.weather} {props.city} playlist
         </div> : null}
         <div>
             {props.weather}
