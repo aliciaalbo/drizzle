@@ -13,6 +13,7 @@ import Logout from "./logout";
 import LatLonSearch from "./latLon";
 import WebPlayer from "./webplayer";
 import EB from "./errorBoundary";
+import SearchToggle from "./searchToggle";
 //import SpotifyPlayer from 'react-spotify-web-playback';
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -38,6 +39,7 @@ function App() {
     const [email, setEmail] = useStickyState("", "email");
     const [lon, setLon] = useStickyState("", "lon");
     const [lat, setLat] = useStickyState("", "lat");
+    const [toggle, setToggle] = useStickyState("", "toggle");
 
     // load the access token through Python's session if can
     if (!access_token) {
@@ -125,6 +127,15 @@ function App() {
       });
     };
 
+    const searchToggle = () => {
+      if (toggle === 'US') {
+        setToggle('')
+      }
+      else {
+        setToggle('US')
+        console.log(toggle)}
+    };
+
     const logoutUser = (email) => {
       if (email) {
         fetch(`/api?do=logout&email=${encodeURIComponent(email)}`)
@@ -158,13 +169,15 @@ function App() {
 
     return (
         <section>
-            <EB><ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /></EB>
-            <EB><LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} /></EB>
-            <EB>{zipcode ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
+            <EB>{toggle === 'US' ? <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /> : <LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} />}</EB>
+            {/* <EB><ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /></EB>
+            <EB><LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} /></EB> */}
+            <EB><SearchToggle searchToggle={searchToggle} toggle={toggle}/></EB>
+            <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
             <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
             <EB>{access_token ? null : <SpotifyLogin />}</EB>
-            <EB>{playlist.length ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
+            <EB>{zipcode || lat ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
             <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : null}</EB>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}
