@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useCookies } from "react-cookie";
 import useStickyState from "./useStickyState";
@@ -11,7 +11,7 @@ import SavePlaylist from "./savePlaylist";
 import SpotifyLogin from "./spotifylogin";
 import Logout from "./logout";
 import LatLonSearch from "./latLon";
-//import WebPlayer from "./webplayer";
+import WebPlayer from "./webplayer";
 //import SpotifyPlayer from 'react-spotify-web-playback';
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -28,8 +28,10 @@ function App(props) {
     const [email, setEmail] = useStickyState("", "email");
     const [lon, setLon] = useStickyState("", "lon");
     const [lat, setLat] = useStickyState("", "lat");
-    //const [isPlayer, setIsPlayer] = useStickyState("", "false");
-    //let playerRef;
+    // not sticky, we want to load fresh
+    // let player = "";
+    //const [player, setPlayer] = useState("");
+    //let player = "";
     //let isPlayer = false;
     // const [isLoggedIn, setIsLoggedIn] = useStickyState( )
 
@@ -37,7 +39,36 @@ function App(props) {
     //   isPlayer = true;
     // }
 
+    if (access_token) {
+      let playa = WebPlayer(access_token);
+      console.log('ppp',playa);
+    }
 
+    // React.useEffect(() => {
+    //   if (access_token) {
+    //     // runs once the script below is loaded
+    //     window.onSpotifyWebPlaybackSDKReady = () => {
+    //       player = new window.Spotify.Player({
+    //         name: 'Moody Playlist Web App',
+    //         volume: 1.0,
+    //         getOAuthToken: (cb) => {
+    //           console.log('at:',access_token);
+    //           // console.log('accessToken', localStorage.getItem('accessToken'));
+    //           // const token = localStorage.getItem('accessToken');
+    //           cb(access_token);
+    //         },
+    //       });
+    //     };
+    //   }
+    //   // script needs to be added dynamically within React so the
+    //   // window.onSpotifyWebPlaybackSDKReady function is immediately available to run
+    //   // once the spotify-player.js finishes loading
+    //   if (!window.Spotify) {
+    //     const scriptTag = document.createElement('script');
+    //     scriptTag.src = 'https://sdk.scdn.co/spotify-player.js';
+    //     document.head.appendChild(scriptTag);
+    //   }
+    // });
 
     // load the access token through Python's session if can
     if (!access_token) {
@@ -167,7 +198,8 @@ function App(props) {
             {access_token ? null : <SpotifyLogin />}
             {playlist.length ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}
             {access_token ? <Logout logoutUser={logoutUser} access_token={access_token} /> : null}
-            {/* {access_token ? <WebPlayer access_token={access_token} /> : null} */}
+            {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
+            {/* <WebPlayer player={player} /> */}
             {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}
         </section>
     );
