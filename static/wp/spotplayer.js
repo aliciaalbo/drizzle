@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import useStickyState from "./useStickyState";
 
 // props: access_token, webplayer, playerstate
 function SpotPlayer(props) {
-    const [playbackToggle, setPlaybackToggle] = useStickyState('no', "playbackToggle");
+    const [playbackToggle, setPlaybackToggle] = useState('');
 
     console.log('spotplayer:',props);
     const deviceId = props.webplayer.player._options.id;
