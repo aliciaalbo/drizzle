@@ -158,7 +158,7 @@ def get_spotify_token(code):
     cid = os.environ['cid']
     secret = os.environ['secret']
     SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
-    SCOPE = 'user-read-playback-state user-read-currently-playing playlist-modify-public user-read-email'
+    SCOPE = 'user-read-email playlist-modify-public streaming user-read-private user-read-playback-state user-modify-playback-state user-library-read user-library-modify user-read-currently-playing'
 
     # CacheDBHandler is a custom class you need to write to store and retrieve cache in the DB, in cachedb.py
     auth_manager = SpotifyOAuth(cid, secret, SPOTIPY_REDIRECT_URI, scope=SCOPE, cache_path=None )
@@ -179,7 +179,8 @@ def get_spotify_credentials(code):
     cid = os.environ['cid']
     secret = os.environ['secret']
     SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
-    SCOPE = 'playlist-modify-private user-read-email'
+    #SCOPE = 'playlist-modify-private user-read-email'
+    SCOPE = 'web-playback user-read-email playlist-modify-public streaming user-read-private user-read-playback-state user-modify-playback-state user-library-read user-library-modify user-read-currently-playing'
     CACHE = '.spotipyoauthcache'
 
     # CacheDB is a custom class you need to make to store the cache in the DB

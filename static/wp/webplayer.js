@@ -1,21 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 function WebPlayer(props) {
-  //const [onReady, setOnReady] = useState(null);
-  // not entirely sure how this works, but keeps the player from writing over itself
+  // not entirely sure how useRef works, but keeps the player from writing over itself
   const playerRef = useRef(null);
-  console.log(props.deviceId);
+  const token = props.access_token;
+  const isReady = props.isReady;
+
+  console.log("deviceid passed to wp: ",props.deviceId);
 
   // creates an instance of the player
+
+  // from pampaplay source code
   useEffect(() => {
    if (props.access_token) {
     // already loaded, we are rolling a new token probably
     if (window.Spotify) {
       playerRef.current = new window.Spotify.Player({
         name: 'Moody Playlist Web App',
-        volume: 1.0,
         getOAuthToken: cb => {
-          cb(props.access_token);
+          console.log('cb at reroll:',token);
+          cb(token);
         },
       });
       props.setIsReady(true);
@@ -26,10 +30,9 @@ function WebPlayer(props) {
     window.onSpotifyWebPlaybackSDKReady = () => {
       playerRef.current = new window.Spotify.Player({
         name: 'Moody Playlist Web App',
-        volume: 1.0,
         getOAuthToken: (cb) => {
-          console.log('at:',props.access_token);
-          cb(props.access_token);
+          console.log('cb at loading sdk first time:',token);
+          cb(token);
         },
       });
       props.setIsReady(true);
@@ -47,7 +50,7 @@ function WebPlayer(props) {
     }
     console.log('player details:',playerRef);
    }
-  }, [props.access_token]);
+  }, [token]);
 
   // const handleReady = useCallback(({ device_id: readyDeviceId }) => {
   //   setDeviceId(readyDeviceId);
@@ -59,20 +62,34 @@ function WebPlayer(props) {
     const player = playerRef.current;
     // an async IIFE to immediate run a function, needed for await
     (async () => {
-      if (props.isReady) {
+      if (isReady) {
+        player.addListener('account_error', e => {
+          console.log('account error:',e);
+        });
+        player.addListener('authentication_error', e => {
+          console.log('auth error:',e);
+        });
+        player.addListener('initialization_error', e => {
+          console.log('init error:',e);
+        });
+        player.addListener('not_ready', e => {
+          console.log('not ready:',e);
+        });
         player.addListener('ready', ({ device_id: readyDeviceId }) => {
           props.setDeviceId(readyDeviceId);
           console.log('rdy deviceid', readyDeviceId);
         });
-        player.addListener('player_state_changed', state => { console.log('state changed:',state); });
+        player.addListener('player_state_changed', state => {
+          console.log('state changed:',state);
+        });
         // now connect
         let connected = await playerRef.current.connect();
         if (connected) {
-          console.log('connected', playerRef.current);
+          console.log('connected', connected, playerRef.current);
         }
       }
     })();
-  }, [props.isReady]);
+  }, [isReady]);
 
   return {
     player: playerRef.current

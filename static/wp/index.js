@@ -14,6 +14,7 @@ import LatLonSearch from "./latLon";
 import WebPlayer from "./webplayer";
 import EB from "./errorBoundary";
 import SearchToggle from "./searchToggle";
+import SpotPlayer from "./spotplayer";
 //import SpotifyPlayer from 'react-spotify-web-playback';
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -27,19 +28,16 @@ function App() {
     const [isReady, setIsReady] = useState("");
     const [deviceId, setDeviceId] = useState("");  
     const [access_token, setAccessToken] = useStickyState("", "access_token");
-//    useEffect(() => {
-//      if (access_token) {
-        let spotplayer = WebPlayer({ access_token: access_token, isReady: isReady, setIsReady: setIsReady, setDeviceId: setDeviceId });
-        console.log('ppp',spotplayer);
-//      }
-//    }, [access_token, isReady]);
-
     // const [refresh_token, setRefreshToken] = useStickyState("", "refresh_token");
     const [name, setName] = useStickyState("", "name");
     const [email, setEmail] = useStickyState("", "email");
     const [lon, setLon] = useStickyState("", "lon");
     const [lat, setLat] = useStickyState("", "lat");
-    const [toggle, setToggle] = useStickyState("", "toggle");
+    const [toggle, setToggle] = useStickyState("US", "toggle");
+    const [playstate, setPlaystate] = useStickyState("", "playstate");
+
+    // instantiate the Spotify Player passes props in object to webplayer.js
+    let webplayer = WebPlayer({ access_token: access_token, isReady: isReady, setIsReady: setIsReady, setDeviceId: setDeviceId });
 
     // load the access token through Python's session if can
     if (!access_token) {
@@ -86,7 +84,15 @@ function App() {
           fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
             .then((res) => res.json())
             .then((res) => {console.log(res); return res})
-            .then((res) => setPlaylist(res))
+            .then((res) => {
+              // for playing in the web player
+              setPlaystate({
+                uris: res.map(t => 'spotify:track:' + t.trackid),
+                offset: 0
+              });
+              // for saving to user account
+              setPlaylist(res);
+            })
             .catch((err) => {
               console.log("ERROR: ",err);
             });
@@ -112,6 +118,8 @@ function App() {
           setWeather(data.weather[0].main);
           setCity(data.name);
           setIcon(data.weather[0].icon);
+          // HERE*****
+
           console.log("%%%%%%%%%%%%%%%%%%%", weather);
           // pass weather to python get playlist back
           fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
@@ -150,22 +158,7 @@ function App() {
         });
       }
     };
-    /*
-    const Login = () => {
-      fetch(`/api?do=login&playlist=${playlist}`)
-    };
-    */
-    /*
-    const savePlaylist = (props) => {
-      const tracks = props.playlist.map(t => t.trackid);
-      fetch(`/api?do=savePlaylist&access_token=${props.access_token}&playlist=${tracks}`)
-      .then((res) => res.json())
-      .then((res)=> {console.log(res); return res})
-      .catch((err) => {
-        console.log("ERROR: ",err);
-      });
-    };
-    */
+
 
     return (
         <section>
@@ -177,8 +170,9 @@ function App() {
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
             <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
             <EB>{access_token ? null : <SpotifyLogin />}</EB>
-            <EB>{zipcode || lat ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
+            <EB>{access_token ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
             <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : null}</EB>
+            <EB>{access_token && deviceId && playlist.length ? <SpotPlayer access_token={access_token} webplayer={webplayer} playstate={playstate} /> : null}</EB>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}
             {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}

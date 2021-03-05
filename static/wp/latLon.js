@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 function LatLonSearch(props) {
+  const [lat, setLat] = useState("");
+  const [isError, setisError] = useState(false);
 
   //  function handleSubmit(e) {
   const handleSubmit = (e) => {
     e.preventDefault();
     props.fetchWeatherLatLon(e.target.lat.value, e.target.lon.value);
-
+    setLat("")
+    setisError(false);
   };
 
   return (
