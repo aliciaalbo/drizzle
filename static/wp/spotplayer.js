@@ -3,7 +3,6 @@ import useStickyState from "./useStickyState";
 
 // props: access_token, webplayer, playerstate
 function SpotPlayer(props) {
-    const [playbackToggle, setPlaybackToggle] = useState('');
 
     console.log('spotplayer:',props);
     const deviceId = props.webplayer.player._options.id;
@@ -11,7 +10,7 @@ function SpotPlayer(props) {
         e.preventDefault();
         const body = JSON.stringify({ uris: props.playstate.uris, offset: { position: props.playstate.offset } });
 
-        setPlaybackToggle('yes');
+        props.setPlaybackToggle('yes');
 
         return fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
             method: 'PUT',
@@ -43,7 +42,7 @@ function SpotPlayer(props) {
 
     return (
         <section>
-            {playbackToggle === 'yes' ? <button onClick={e => { pause(e) }}>play/Pause</button> : <button onClick={e => { play(e) }}>Play</button>}
+            {props.playbackToggle === 'yes' ? <button onClick={e => { pause(e) }}>Play/Pause</button> : <button onClick={e => { play(e) }}>Play</button>}
             
             
             <button onClick={e => { prev(e) }}>Previous</button>

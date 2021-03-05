@@ -35,6 +35,7 @@ function App() {
     const [lat, setLat] = useStickyState("", "lat");
     const [toggle, setToggle] = useStickyState("US", "toggle");
     const [playstate, setPlaystate] = useStickyState("", "playstate");
+    const [playbackToggle, setPlaybackToggle] = useStickyState('no', "playbackToggle");
 
     // instantiate the Spotify Player passes props in object to webplayer.js
     let webplayer = WebPlayer({ access_token: access_token, isReady: isReady, setIsReady: setIsReady, setDeviceId: setDeviceId });
@@ -79,6 +80,7 @@ function App() {
           setWeather(data.weather[0].main);
           setCity(data.name);
           setIcon(data.weather[0].icon);
+          
           console.log("%%%%%%%%%%%%%%%%%%%", weather);
           // pass weather to python get playlist back
           fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
@@ -93,6 +95,7 @@ function App() {
               // for saving to user account
               setPlaylist(res);
             })
+            setPlaybackToggle('no')
             .catch((err) => {
               console.log("ERROR: ",err);
             });
@@ -115,25 +118,38 @@ function App() {
         return response.json();
       })
       .then((data) => {
-          setWeather(data.weather[0].main);
-          setCity(data.name);
-          setIcon(data.weather[0].icon);
-          // HERE*****
+        setWeather(data.weather[0].main);
+        setCity(data.name);
+        setIcon(data.weather[0].icon);
+        
+        console.log("%%%%%%%%%%%%%%%%%%%", weather);
+        // pass weather to python get playlist back
+        fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
+          .then((res) => res.json())
+          .then((res) => {console.log(res); return res})
+          .then((res) => {
+            // for playing in the web player
+            setPlaystate({
+              uris: res.map(t => 'spotify:track:' + t.trackid),
+              offset: 0
+            });
+            // for saving to user account
+            setPlaylist(res);
+            setPlaybackToggle('no')
+          })
+          .catch((err) => {
+            console.log("ERROR: ",err);
+          });
+        // .then((data) => {
+        //   setPlaylist(data);
+        //   console.log("***********", playlist)
+        // })            
+    })
+    .catch((err) => {
+      console.log("ERROR: ",err);
+    });
+  };
 
-          console.log("%%%%%%%%%%%%%%%%%%%", weather);
-          // pass weather to python get playlist back
-          fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
-            .then((res) => res.json())
-            .then((res) => {console.log(res); return res})
-            .then((res) => setPlaylist(res))
-            .catch((err) => {
-              console.log("ERROR: ",err);
-            });     
-      })
-      .catch((err) => {
-        console.log("ERROR: ",err);
-      });
-    };
 
     const searchToggle = () => {
       if (toggle === 'US') {
@@ -172,7 +188,7 @@ function App() {
             <EB>{access_token ? null : <SpotifyLogin />}</EB>
             <EB>{access_token ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
             <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : null}</EB>
-            <EB>{access_token && deviceId && playlist.length ? <SpotPlayer access_token={access_token} webplayer={webplayer} playstate={playstate} /> : null}</EB>
+            <EB>{access_token && deviceId && playlist.length ? <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlisy={playlist} /> : null}</EB>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}
             {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}
