@@ -73,6 +73,7 @@ function App() {
     */
     const fetchWeather = (zipcode) => {
       setZipcode(zipcode);
+      setInvalidZipInput('');
       // key = process.env.REACT_APP_WEATHER_API_KEY;
       //        fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${encodeURIComponent(zipcode)},us&appid=#######`)
       fetch(`/api?do=getWeather&zip=${encodeURIComponent(zipcode)}`)
@@ -120,6 +121,7 @@ function App() {
     const fetchWeatherLatLon = (lat,lon) => {
       setLat(lat);
       setLon(lon);
+      setInvalidCoordInput('');
       fetch(`/api?do=getWeatherLatLon&lat=${lat}&lon=${lon}`)
       .then((response) => {
           console.log("------------",response);
