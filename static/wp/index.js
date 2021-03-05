@@ -15,6 +15,8 @@ import WebPlayer from "./webplayer";
 import EB from "./errorBoundary";
 import SearchToggle from "./searchToggle";
 import SpotPlayer from "./spotplayer";
+import BadZip from "./flashBadZip";
+import BadCoords from "./flashBadCoords";
 //import SpotifyPlayer from 'react-spotify-web-playback';
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -36,6 +38,8 @@ function App() {
     const [toggle, setToggle] = useStickyState("US", "toggle");
     const [playstate, setPlaystate] = useStickyState("", "playstate");
     const [playbackToggle, setPlaybackToggle] = useStickyState('no', "playbackToggle");
+    const [isInvalidZipInput, setInvalidZipInput] = useState("");
+    const [isInvalidCoordInput, setInvalidCoordInput] = useState("");
 
     // instantiate the Spotify Player passes props in object to webplayer.js
     let webplayer = WebPlayer({ access_token: access_token, isReady: isReady, setIsReady: setIsReady, setDeviceId: setDeviceId });
@@ -77,6 +81,8 @@ function App() {
         return response.json();
       })
       .then((data) => {
+        console.log(data.cod);
+        if (data.cod != '404'){
           setWeather(data.weather[0].main);
           setCity(data.name);
           setIcon(data.weather[0].icon);
@@ -99,11 +105,13 @@ function App() {
             .catch((err) => {
               console.log("ERROR: ",err);
             });
-          // .then((data) => {
-          //   setPlaylist(data);
-          //   console.log("***********", playlist)
-          // })            
+          }
+          
+          else{
+            setInvalidZipInput('yes');
+          }
       })
+      
       .catch((err) => {
         console.log("ERROR: ",err);
       });
@@ -118,32 +126,36 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        setWeather(data.weather[0].main);
-        setCity(data.name);
-        setIcon(data.weather[0].icon);
+        console.log(data.cod);
+        if (data.cod != '400'){
+          setWeather(data.weather[0].main);
+          setCity(data.name);
+          setIcon(data.weather[0].icon);
         
-        console.log("%%%%%%%%%%%%%%%%%%%", weather);
-        // pass weather to python get playlist back
-        fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
-          .then((res) => res.json())
-          .then((res) => {console.log(res); return res})
-          .then((res) => {
-            // for playing in the web player
-            setPlaystate({
-              uris: res.map(t => 'spotify:track:' + t.trackid),
-              offset: 0
+
+          console.log("%%%%%%%%%%%%%%%%%%%", weather);
+          // pass weather to python get playlist back
+          fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
+            .then((res) => res.json())
+            .then((res) => {console.log(res); return res})
+            .then((res) => {
+              // for playing in the web player
+              setPlaystate({
+                uris: res.map(t => 'spotify:track:' + t.trackid),
+                offset: 0
+              });
+              // for saving to user account
+              setPlaylist(res);
+              setPlaybackToggle('no')
+            })
+            .catch((err) => {
+              console.log("ERROR: ",err);
             });
-            // for saving to user account
-            setPlaylist(res);
-            setPlaybackToggle('no')
-          })
-          .catch((err) => {
-            console.log("ERROR: ",err);
-          });
-        // .then((data) => {
-        //   setPlaylist(data);
-        //   console.log("***********", playlist)
-        // })            
+          }
+          else{
+            setInvalidCoordInput('yes');
+          }
+        
     })
     .catch((err) => {
       console.log("ERROR: ",err);
@@ -182,6 +194,8 @@ function App() {
             {/* <EB><ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /></EB>
             <EB><LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} /></EB> */}
             <EB><SearchToggle searchToggle={searchToggle} toggle={toggle}/></EB>
+            <EB>{isInvalidZipInput ==='' ? null : <BadZip />}</EB>
+            <EB>{isInvalidCoordInput ==='' ? null : <BadCoords />}</EB>
             <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
             <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
