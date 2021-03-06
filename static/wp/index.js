@@ -202,7 +202,7 @@ function App() {
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
             <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
             <EB>{access_token ? null : <SpotifyLogin />}</EB>
-            <EB>{access_token ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
+            <EB>{access_token && playlist.length ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
             <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : null}</EB>
             <EB>{access_token && deviceId && playlist.length ? <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlisy={playlist} /> : null}</EB>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
