@@ -9,9 +9,6 @@ data.csv
 *.sql
 .env
 .cache
-<<<<<<< HEAD
 compilesrv
 compiledev
 server.ini
-=======
->>>>>>> ee026594f42d68dbd12cf99bbd2009014b5401bb
