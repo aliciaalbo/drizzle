@@ -1,4 +1,3 @@
-secrets.py
 secrets.sh
 secrets.py
 env/
@@ -9,6 +8,7 @@ data.csv
 *.sql
 .env
 .cache
+compile
 compilesrv
 compiledev
 server.ini
