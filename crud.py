@@ -75,8 +75,6 @@ def logout(email):
     return "Could not logout, no access token"
 
 
-#def get_user_by_uuid(uuid):
-#    return User.query.filter(User.uuid == uuid).first()
 
 def get_user_by_access_token(access_token):
     return User.query.filter(User.access_token == access_token).first()
