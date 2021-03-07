@@ -1,8 +1,8 @@
 import React from 'react';
 
 function showConditions(props) {
-    console.log(props.weather)
-    let url=`http://openweathermap.org/img/wn/${props.icon}@2x.png`
+    console.log('weather:',props.weather);
+    let url=`https://openweathermap.org/img/wn/${props.icon}@2x.png`;
 
   return(
     <div>
@@ -15,11 +15,11 @@ function showConditions(props) {
         <div>
             {props.city}
         </div>
-        <div>    
+        <div>
         <img src={url} />
         </div>
     </div>
-  )
+  );
 }
 
 export default showConditions;

@@ -4,11 +4,12 @@ from random import choice
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
+import secrets
 
-def create_track(acoutsicness, 
-                 danceability, 
-                 duration_ms, 
-                 energy, 
+def create_track(acoutsicness,
+                 danceability,
+                 duration_ms,
+                 energy,
                  track_id,
                  instrumentalness,
                  key,
@@ -23,10 +24,10 @@ def create_track(acoutsicness,
                  artist
                  ):
 
-    track = Track(acoutsicness = acoutsicness, 
-                 danceability = danceability, 
-                 duration_ms = duration_ms, 
-                 energy = energy, 
+    track = Track(acoutsicness = acoutsicness,
+                 danceability = danceability,
+                 duration_ms = duration_ms,
+                 energy = energy,
                  track_id = track_id,
                  instrumentalness = instrumentalness,
                  key = key,
@@ -47,7 +48,7 @@ def create_track(acoutsicness,
     return track
 
 # add user id (can grab from spotify response I think), remove fname, lname
-def create_user(uuid, email, name, spotify_id, access_token, refresh_token):
+def create_user(email, name, spotify_id, access_token, refresh_token):
     """add new user to db and stores their tokens"""
 
     user = User(email = email,
@@ -121,12 +122,12 @@ def create_weather_mood(weather, mood):
 
     db.session.add(weather_mood)
     db.session.commit()
-    
+
     return weather_mood
 
 def get_mood(weather):
     """gets list of moods associated with weather"""
-    
+
     results =  db.session.query(WeatherMood.mood).filter(WeatherMood.weather_condition == weather).all()
     moods = [i[0] for i in results]
     return moods
@@ -155,9 +156,9 @@ def create_playlist(moods):
     return songs
 
 def get_spotify_token(code):
-    cid = os.environ['cid']
-    secret = os.environ['secret']
-    SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
+    cid = secrets.cid
+    secret = secrets.secret
+    SPOTIFY_REDIRECT_URI = secrets.spotifyredirect
     SCOPE = 'user-read-email playlist-modify-public streaming user-read-private user-read-playback-state user-modify-playback-state user-library-read user-library-modify user-read-currently-playing'
 
     # CacheDBHandler is a custom class you need to write to store and retrieve cache in the DB, in cachedb.py
@@ -175,11 +176,9 @@ def get_spotify_credentials(code):
     # query db for access
     # check id fresh
     # if yes save play list
-
-    cid = os.environ['cid']
-    secret = os.environ['secret']
-    SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
-    #SCOPE = 'playlist-modify-private user-read-email'
+    cid = secrets.cid
+    secret = secrets.secret
+    SPOTIFY_REDIRECT_URI = secrets.spotifyredirect
     SCOPE = 'web-playback user-read-email playlist-modify-public streaming user-read-private user-read-playback-state user-modify-playback-state user-library-read user-library-modify user-read-currently-playing'
     CACHE = '.spotipyoauthcache'
 

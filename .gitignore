@@ -1,7 +1,13 @@
+secrets.py
 secrets.sh
 env/
+wenv/
 __pycache__/
 import.py
 data.csv
 *.sql
 .env
+.cache
+compilesrv
+compiledev
+server.ini

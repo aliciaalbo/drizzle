@@ -10,15 +10,18 @@ import spotipy
 import sys
 import pprint
 import json
+import secrets
 
 app = Flask(__name__)
 app.secret_key = "GFRWYU83752ounfatgr25DCFgw8795trhegsfjdvn"
 app.jinja_env.undefined = StrictUndefined
 
+connect_to_db(app)
+
 """uses client id and secret + auth code to fetch tokens and email"""
-cid = os.environ['cid']
-secret = os.environ['secret']
-SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
+cid = secrets.cid
+secret = secrets.secret
+SPOTIPY_REDIRECT_URI = secrets.spotifyredirect
 # to get account info for users: user-read-email
 # to save playlist: playlist-modify-public
 # to stream in player: streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state
@@ -51,13 +54,13 @@ def parse_api():
         print(songs)
         return jsonify(songs)
     elif do == "getWeather":
-        appid = os.environ['appid']
+        appid = secrets.appid
         zipcode = request.args.get('zip')
         weatherurl = 'https://api.openweathermap.org/data/2.5/weather?zip='+zipcode+',us&appid='+appid
         print(weatherurl)
         return dload.json(weatherurl)
     elif do == "getWeatherLatLon":
-        appid = os.environ['appid']
+        appid = secrets.appid
         lat = request.args.get('lat')
         lon = request.args.get('lon')
         weatherurl = 'https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid='+appid
@@ -135,6 +138,5 @@ def get_email_and_token():
     return redirect('/')
 
 if __name__ == '__main__':
-    connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
- 
+
