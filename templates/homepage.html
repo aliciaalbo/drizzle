@@ -8,78 +8,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
     <title>Drizzle</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/site.css') }}" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
   </head>
   <body>
   <div> TOKEN </div> 
-  <div id="app"></div>
-  <div id="login"></div>
-  <div id="react-root"></div>
+  <div class="container"></div><div class="child" id="app"></div>
+  <!-- <div id="login"></div>
+  <div id="react-root"></div> -->
   <script src="{{ url_for('static', filename='dist/bundle.js') }}"></script>
   </body>
 </html>
-<!--
-  <script type="text/jsx" src="/static/js/homepage.jsx" />
-  <script type="text/jsx" src="/static/js/loginForm.jsx" />
-
-  <h2>Create an Account to Save Playlists</h2>
-  <form action="/users" method="POST">
-    <p>
-      Email <input type="text" name="email" required>
-    </p>
-
-    <p>
-      Password <input type="password" name="password" required>
-    </p>
-
-    <p>
-      Confirm Password <input type="password" name="confirm-password" required>
-    </p>
-
-    <p>
-      First Name <input type="text" name="fname" required>
-    </p>
-
-    <p>
-      Last Name <input type="text" name="lname" required>
-    </p>
-
-    <p>
-      <input type="submit">
-    </p>
-  </form>
-
-  <h2>enter zip code </h2>
-    <p>
-      Zip Code <input type="text" name="zip" required>
-    </p>
-
-
-    <p>
-      <input type="submit">
-    </p>
-  </form>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Document</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js" crossorigin></script>
-  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-  <script
-    src="https://code.jquery.com/jquery-3.4.1.js"
-    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-    crossorigin="anonymous"></script>
-
-  <link href="/static/css/site.css" rel="stylesheet">
-</head>
-<body>
-  <div id="navbar"></div>
-
-  <div id="container"></div>
-
-  
-</body>
-<foot> </foot>
-</html> -->

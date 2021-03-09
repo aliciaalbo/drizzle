@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 function LatLonSearch(props) {
   const [lat, setLat] = useState("");
@@ -13,11 +15,11 @@ function LatLonSearch(props) {
   };
 
   return (
-      <form onSubmit={e => { handleSubmit(e) }}>
+      <Form className="search" onSubmit={e => { handleSubmit(e) }}>
         Latitude: <input type="text" name="lat" defaultValue={props.lat} required /> 
         Longitude: <input type="text" name="lon" defaultValue={props.lon} required />
-        <input type="submit" /> 
-      </form>
+        <Button variant="light" type="submit" /> 
+      </Form>
   );
 }
 

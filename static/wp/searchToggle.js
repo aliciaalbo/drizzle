@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 function SearchToggle(props) {
 
@@ -11,11 +12,11 @@ function SearchToggle(props) {
 
   return (
       <section>
-        {props.toggle === "US" ? <button onClick={e => { handleSubmit(e) }}>
+        {props.toggle === "US" ? <Button onClick={e => { handleSubmit(e) }}>
             Not in the US? Try the Lat/Long search!
-        </button> : <button onClick={e => { handleSubmit(e) }}>
+        </Button> : <Button onClick={e => { handleSubmit(e) }}>
         In the US? Try zip code search
-        </button>}
+        </Button>}
     </section>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 function Reroll(props) {
      const handleClick = (e) => {
@@ -7,9 +8,9 @@ function Reroll(props) {
 
      };
     return (
-            <button onClick={e => { handleClick(e) }}>
-            I hate it
-        </button>
+            <Button onClick={e => { handleClick(e) }}>
+            New Mix
+        </Button>
     )
 }
 

@@ -1,11 +1,21 @@
 .header {
   text-align: center;
 }
-/* Set a background image by replacing the URL below */
+
+.child {
+
+  display: flex;
+  justify-content: center;
+}
+
 body {
   background: url('/static/img/static.png') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
+}
+
+.search {
+  color: wheat;
 }

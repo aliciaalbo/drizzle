@@ -6,16 +6,16 @@ function showConditions(props) {
 
   return(
     <div>
-        {props.name ? <div>
+        {props.username ? <div>
             {props.username}&apos;s {props.weather} {props.city} playlist
         </div> : null}
-        <div>
+        <div class="text-white">
             {props.weather}
         </div>
-        <div>
+        <div class="text-white">
             {props.city}
         </div>
-        <div>
+        <div >
         <img src={url} />
         </div>
     </div>

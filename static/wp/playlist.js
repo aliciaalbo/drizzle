@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 function ShowPlaylist(props) {
   return(
-    <ul>
+    <ul >
       {props.playlist.map((song) => {
-        return <li key={song.trackid}>{song.title}, a song by: {song.artist}</li>
+        return <li class="text-white" key={song.trackid}>{song.title}, a song by: {song.artist}</li>
       })}
     </ul>
   )

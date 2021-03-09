@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import Failure from "./flash_failure"
 import Success from "./flash_success"
+import Button from 'react-bootstrap/Button';
 //import Player from "./webplayer";
 
 // import FlashMessage from "react-flash-message";
@@ -28,9 +29,9 @@ function SavePlaylist(props) {
     };
     return (
         <section>
-            <button onClick={e => { handleClick(e) }}>
+            <Button onClick={e => { handleClick(e) }}>
             I love it keep it forever
-            </button>
+            </Button>
             {pid ? <Success /> : null }
             {isError ? <Failure /> : null }
             {/* <Player pid={pid} /> */}
