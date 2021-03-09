@@ -12,3 +12,4 @@ compile
 compilesrv
 compiledev
 server.ini
+static/img/
