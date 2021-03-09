@@ -20,6 +20,13 @@ import BadCoords from "./flashBadCoords";
 //import SpotifyPlayer from 'react-spotify-web-playback';
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import Background from './static/img/background.png';
+
+// var sectionStyle = {
+//   backgroundImage: `url(${Background})`
+// }
+
 
 function App() {
     const [zipcode, setZipcode] = useStickyState("", "zipcode");

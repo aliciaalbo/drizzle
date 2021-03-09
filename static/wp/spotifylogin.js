@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 function SpotifyLogin() {
   const handleClick = (e) => {
@@ -17,10 +18,12 @@ function SpotifyLogin() {
   };
 
   return (
-    <button onClick={e => { handleClick(e) }}>
+    <Button variant="success" onClick={e => { handleClick(e) }}>
       login with Spotify
-    </button>
+    </Button>
   )
 }
+
+
 
 export default SpotifyLogin;
