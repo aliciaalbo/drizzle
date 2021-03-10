@@ -214,12 +214,20 @@ function App() {
             <div class="child">
             <EB>{isInvalidCoordInput ==='' ? null : <BadCoords />}</EB>
             </div>
+            <div class="child">
             <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
+            </div>
+            <div class="child">
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
-          
-            <div className="buttons" class="child">
+            </div>
+            
+            <div class="child">
               <div class="btn-group mr-3">
               <EB>{zipcode ? <Reroll  fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
+              </div>
+              <div class="btn-group mr-3">
+                <EB>{access_token && deviceId && playlist.length ? <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} /> : null}</EB>
+
               </div>
               <div class="btn-group mr-3">
               <EB>{access_token && playlist.length ? <SavePlaylist  playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
@@ -229,7 +237,6 @@ function App() {
               <EB>{email ? <Logout  logoutUser={logoutUser} email={email} /> : null}</EB>
               </div>
             </div>
-            <EB>{access_token && deviceId && playlist.length ? <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} /> : null}</EB>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}
             {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}

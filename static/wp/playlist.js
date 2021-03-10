@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function ShowPlaylist(props) {
   return(
-
+<div className="pane">
     <table >
       <tr>
         <th class="text-white">Song</th>
@@ -15,7 +15,7 @@ function ShowPlaylist(props) {
         </tr>
       })}
     </table>
-
+</div>
   )
 }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import useStickyState from "./useStickyState";
+// import useStickyState from "./useStickyState";
+import Button from 'react-bootstrap/Button';
 
 // props: access_token, webplayer, playerstate
 function SpotPlayer(props) {
@@ -42,11 +43,11 @@ function SpotPlayer(props) {
 
     return (
         <section>
-            {props.playbackToggle === 'yes' ? <button onClick={e => { pause(e) }}>Play/Pause</button> : <button onClick={e => { play(e) }}>Play</button>}
+            {props.playbackToggle === 'yes' ? <Button onClick={e => { pause(e) }}><i class="fas fa-play"></i><i class="fas fa-pause"></i>Play/Pause</Button> : <Button onClick={e => { play(e) }}>Play</Button>}
             
             
-            <button onClick={e => { prev(e) }}>Previous</button>
-            <button onClick={e => { next(e) }}>Next</button>
+            <Button onClick={e => { prev(e) }}><i class="fas fa-backward"></i>Previous</Button>
+            <Button onClick={e => { next(e) }}><i class="fas fa-forward"></i>Next</Button>
         </section>
     )
 }
