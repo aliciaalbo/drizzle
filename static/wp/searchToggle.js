@@ -12,9 +12,9 @@ function SearchToggle(props) {
 
   return (
       <section>
-        {props.toggle === "US" ? <Button onClick={e => { handleSubmit(e) }}>
+        {props.toggle === "US" ? <Button variant="link" onClick={e => { handleSubmit(e) }}>
             Not in the US? Try the Lat/Long search!
-        </Button> : <Button onClick={e => { handleSubmit(e) }}>
+        </Button> : <Button  variant="link" onClick={e => { handleSubmit(e) }}>
         In the US? Try zip code search
         </Button>}
     </section>

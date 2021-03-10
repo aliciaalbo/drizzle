@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 
 function ShowPlaylist(props) {
   return(
-<div className="pane">
-    <table >
-      <tr>
-        <th class="text-white">Song</th>
-        <th class="text-white">Artist</th>
-      </tr>
+    <div className="playlist container text-white">
+      <div className="row playlist-header justify-content-center align-items-center">
+        <div className="col">Song</div>
+        <div className="col">Artist</div>
+      </div>
       {props.playlist.map((song) => {
-        return <tr>
-          <td class="text-white">{song.title}</td>
-          <td class="text-white">{song.artist}</td>
-        </tr>
+        return (
+      <div className="row playlist-row justify-content-center align-items-center">
+        <div className="col playlist-title">{song.title}</div>
+        <div className="col playlist-artist">{song.artist}</div>
+      </div>
+        )
       })}
-    </table>
-</div>
+    </div>
   )
 }
 

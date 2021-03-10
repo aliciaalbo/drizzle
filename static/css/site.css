@@ -50,6 +50,31 @@ body {
 
 } */
 
+.playlist {
+  background-color: rgba(255, 255, 255, 0.15) ;
+  max-width: 600px;
+  min-width: 300px;
+  width: 70%;
+  max-height: 20em;
+  overflow-y: scroll;
+}
+
+.playlist div {
+  padding:.2em;
+  margin-left:1em;
+}
+
+.playlist-header {
+  font-weight:bold;
+  font-size:1.2em;
+}
+
+.playlist-row {
+
+}
+.playlist-title{}
+.playlist-artist{}
+
 table{
   background-color: rgba(255, 255, 255, 0.15) ;
   max-width: 600px;
