@@ -13,7 +13,7 @@ function ZipCodeSearch(props) {
 
   return (
       <Form className="search" onSubmit={e => { handleSubmit(e) }}>
-        Zip code: <input type="text" name="zipcode" defaultValue={props.zipcode} required /> <Button variant="light" type="submit" />
+        Zip code: <input type="text" name="zipcode" defaultValue={props.zipcode} required /> <Button className="custom-btn" type="submit"> Search </Button>
       </Form>
   );
 }

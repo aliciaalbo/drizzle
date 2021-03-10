@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 function Logout(props) {
     const handleClick = (e) => {
@@ -6,9 +7,9 @@ function Logout(props) {
         props.logoutUser(props.email);
     };
     return (
-        <button onClick={e => { handleClick(e) }}>
+        <Button class="btn mr-3" variant="success" onClick={e => { handleClick(e) }}>
             logout 
-        </button>
+        </Button>
     )
 }
 

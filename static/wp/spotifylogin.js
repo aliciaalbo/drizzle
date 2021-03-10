@@ -18,7 +18,7 @@ function SpotifyLogin() {
   };
 
   return (
-    <Button variant="success" onClick={e => { handleClick(e) }}>
+    <Button inline variant="success" onClick={e => { handleClick(e) }}>
       login with Spotify
     </Button>
   )

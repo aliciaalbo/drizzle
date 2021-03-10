@@ -21,6 +21,7 @@ import BadCoords from "./flashBadCoords";
 //import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 // import Background from './static/img/background.png';
 
 // var sectionStyle = {
@@ -198,19 +199,36 @@ function App() {
 
 
     return (
-        <section>
+        <section className="page">
+          <div class="child">
             <EB>{toggle === 'US' ? <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /> : <LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} />}</EB>
+           </div>
             {/* <EB><ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /></EB>
             <EB><LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} /></EB> */}
+            <div class="child">
             <EB><SearchToggle searchToggle={searchToggle} toggle={toggle}/></EB>
+            </div>
+            <div class="child">
             <EB>{isInvalidZipInput ==='' ? null : <BadZip />}</EB>
+            </div>
+            <div class="child">
             <EB>{isInvalidCoordInput ==='' ? null : <BadCoords />}</EB>
+            </div>
             <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
-            <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
-            <EB>{access_token ? null : <SpotifyLogin />}</EB>
-            <EB>{access_token && playlist.length ? <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
-            <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : null}</EB>
+          
+            <div className="buttons" class="child">
+              <div class="btn-group mr-3">
+              <EB>{zipcode ? <Reroll  fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
+              </div>
+              <div class="btn-group mr-3">
+              <EB>{access_token && playlist.length ? <SavePlaylist  playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
+              </div>
+              <div style={{ marginLeft: "auto" }} class="btn-group mr-3">
+              <EB>{access_token ? null : <SpotifyLogin  />}</EB>
+              <EB>{email ? <Logout  logoutUser={logoutUser} email={email} /> : null}</EB>
+              </div>
+            </div>
             <EB>{access_token && deviceId && playlist.length ? <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} /> : null}</EB>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}

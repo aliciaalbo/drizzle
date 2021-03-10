@@ -18,7 +18,7 @@ function LatLonSearch(props) {
       <Form className="search" onSubmit={e => { handleSubmit(e) }}>
         Latitude: <input type="text" name="lat" defaultValue={props.lat} required /> 
         Longitude: <input type="text" name="lon" defaultValue={props.lon} required />
-        <Button variant="light" type="submit" /> 
+        <Button className="custom-btn" type="submit" > Search </Button>
       </Form>
   );
 }

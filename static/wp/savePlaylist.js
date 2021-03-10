@@ -28,14 +28,14 @@ function SavePlaylist(props) {
         });
     };
     return (
-        <section>
-            <Button onClick={e => { handleClick(e) }}>
+        <div>
+            <Button class="btn mr-3" onClick={e => { handleClick(e) }}>
             I love it keep it forever
             </Button>
             {pid ? <Success /> : null }
             {isError ? <Failure /> : null }
             {/* <Player pid={pid} /> */}
-        </section>
+        </div>
     )
 }
 

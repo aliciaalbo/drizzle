@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 
 function ShowPlaylist(props) {
   return(
-    <ul >
+
+    <table >
+      <tr>
+        <th class="text-white">Song</th>
+        <th class="text-white">Artist</th>
+      </tr>
       {props.playlist.map((song) => {
-        return <li class="text-white" key={song.trackid}>{song.title}, a song by: {song.artist}</li>
+        return <tr>
+          <td class="text-white">{song.title}</td>
+          <td class="text-white">{song.artist}</td>
+        </tr>
       })}
-    </ul>
+    </table>
+
   )
 }
 

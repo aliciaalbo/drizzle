@@ -2,11 +2,24 @@
   text-align: center;
 }
 
+/* @media screen and (min-width: 900px) {
+  article {
+    padding: 1rem 1rem;
+  }
+} */
+
 .child {
 
   display: flex;
   justify-content: center;
 }
+
+.page {
+  max-width: 900px;
+  min-width: 300px;
+  width: 70%;
+}
+
 
 body {
   background: url('/static/img/static.png') no-repeat center center fixed;
@@ -17,5 +30,37 @@ body {
 }
 
 .search {
-  color: wheat;
+  color: #99A5AA;
+}
+
+.header-text {
+  color: #99A5AA;
+}
+
+.custom-btn {
+  background-color: #f6f3e4 !important;
+  border: #f6f3e4 !important;
+  color: #18455b !important;
+}
+
+.buttons {
+  max-width: 900px;
+  min-width: 300px;
+  width: 70%;
+
+}
+
+table{
+  background-color: rgba(255, 255, 255, 0.15) ;
+  max-width: 600px;
+  min-width: 300px;
+  width: 70%;
+  padding:30px, 40px, 20px, 10px;
+  max-height: 200px;
+}
+
+.table{
+  max-width: 600px;
+  min-width: 300px;
+  width: 70%;
 }
