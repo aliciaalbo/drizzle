@@ -43,10 +43,10 @@ function SpotPlayer(props) {
 
     return (
         <section>
-            <Button variant="dark" onClick={e => { prev(e) }}><i class="fas fa-backward"></i>Previous</Button>
-            {props.playbackToggle === 'yes' ? <Button variant="dark" onClick={e => { pause(e) }}><i class="fas fa-play"></i><i class="fas fa-pause"></i>Play/Pause</Button> : <Button variant="dark" onClick={e => { play(e) }}>Play</Button>}
+            <Button className="custom-btn-light" variant="dark" onClick={e => { prev(e) }}><i class="fas fa-backward"></i>Previous</Button>
+            {props.playbackToggle === 'yes' ? <Button className="custom-btn-light" variant="dark" onClick={e => { pause(e) }}><i class="fas fa-play"></i><i class="fas fa-pause"></i>Play/Pause</Button> : <Button className="custom-btn-light"variant="dark" onClick={e => { play(e) }}>Play</Button>}
 
-            <Button variant="dark" onClick={e => { next(e) }}><i class="fas fa-forward"></i>Next</Button>
+            <Button className="custom-btn-light" variant="dark" onClick={e => { next(e) }}><i class="fas fa-forward"></i>Next</Button>
         </section>
     )
 }

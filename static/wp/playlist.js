@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
 
 function ShowPlaylist(props) {
-  return(
-    <div className="playlist container text-white">
-      <div className="row playlist-header justify-content-center align-items-center">
-        <div className="col">Song</div>
-        <div className="col">Artist</div>
-      </div>
+  return (
+    <div className="playlist">
       {props.playlist.map((song) => {
         return (
-      <div className="row playlist-row justify-content-center align-items-center">
-        <div className="col playlist-title">{song.title}</div>
-        <div className="col playlist-artist">{song.artist}</div>
-      </div>
-        )
-      })}
+        <div>
+      <div className="row playlist-title">{song.title}</div>
+      <div className="row playlist-artist"> {song.artist}</div>
+        </div>
+        )})}
     </div>
-  )
-}
+      )}
+
+
 
 export default ShowPlaylist;
+
+{/* // return(
+//   <div className="playlist container text-white">
+//     <div className="row playlist-header justify-content-center align-items-center">
+//       <div className="col">Song</div>
+//       <div className="col">Artist</div>
+//     </div>
+//     {props.playlist.map((song) => {
+//       return (
+//     <div className="row playlist-row justify-content-center align-items-center">
+//       <div className="col playlist-title">{song.title}</div>
+//       <div className="col playlist-artist">{song.artist}</div>
+//     </div>
+//       )
+//     })}
+//   </div>
+// ) */}
 
 /* 
 function getPlaylist(buildPlaylist) {

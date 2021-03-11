@@ -57,6 +57,7 @@ body {
   border: #99A5AA !important;
   color: #18455b !important;
   outline: none !important;
+  padding: 10px
 }
 
 /* .buttons {
@@ -73,6 +74,7 @@ body {
   width: 70%;
   max-height: 20em;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .playlist div {
@@ -86,10 +88,23 @@ body {
 }
 
 .playlist-row {
-
 }
-.playlist-title{}
-.playlist-artist{}
+
+.playlist-title{
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  line-height: 120%;
+}
+
+.playlist-artist{
+  font-size: smaller;
+  color: white;
+  line-height: 80%;
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+}
 
 table{
   background-color: rgba(255, 255, 255, 0.15) ;
