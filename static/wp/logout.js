@@ -7,8 +7,8 @@ function Logout(props) {
         props.logoutUser(props.email);
     };
     return (
-        <Button class="btn mr-3" variant="success" onClick={e => { handleClick(e) }}>
-            logout 
+        <Button class="btn mr-3" variant="success" onClick={e => { handleClick(e) }}><i class="fab fa-spotify"></i>&nbsp;
+          logout 
         </Button>
     )
 }

@@ -38,9 +38,24 @@ body {
 }
 
 .custom-btn {
-  background-color: #18455b !important;
-  border: #18455b !important;
-  color: #f6f3e4 !important;
+  background-color:  rgba(255, 255, 255, 0.15) !important;
+  border: none !important;
+  color: #99A5AA !important;
+  outline: none !important;
+  box-shadow: none;
+  size: 
+}
+
+.custom-btn:focus {
+  outline: none !important;
+  outline-offset: none !important;
+}
+
+.custom-btn-light {
+  background-color: #99A5AA !important;
+  border: #99A5AA !important;
+  color: #18455b !important;
+  outline: none !important;
 }
 
 /* .buttons {

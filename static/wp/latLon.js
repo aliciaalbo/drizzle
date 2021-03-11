@@ -15,10 +15,10 @@ function LatLonSearch(props) {
   };
 
   return (
-      <Form className="search" onSubmit={e => { handleSubmit(e) }}>
+      <Form variant="dark" className="search" onSubmit={e => { handleSubmit(e) }}>
         Latitude: <input type="text" name="lat" defaultValue={props.lat} required /> 
         Longitude: <input type="text" name="lon" defaultValue={props.lon} required />
-        <Button className="custom-btn" type="submit" > Search </Button>
+        <Button className="custom-btn-light" type="submit" > <i class="fas fa-search"></i> </Button>
       </Form>
   );
 }

@@ -9,7 +9,7 @@ function Reroll(props) {
      };
     return (
 
-            <Button class="btn mr-3" onClick={e => { handleClick(e) }}>
+            <Button variant="dark" className="custom-btn-light" class="btn mr-3" onClick={e => { handleClick(e) }}><i class="fas fa-redo"></i>&nbsp;
             New Mix
             </Button>
 
