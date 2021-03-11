@@ -6,7 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 function Success(){
     return(
     <FlashMessage duration={5000} persistOnHover={true}>
-    <Alert variant="dark"> class="text-white">Success! Go to Spotify to view your playlist</Alert>
+    <Alert variant="success"> Success! Go to Spotify to view your playlist</Alert>
     </FlashMessage>)
 }
 

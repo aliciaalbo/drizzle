@@ -27,6 +27,7 @@ body {
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
+  font-family: 'Fjalla One', sans-serif;
 }
 
 .search {
@@ -46,10 +47,10 @@ body {
   size: 
 }
 
-.custom-btn:focus {
+/* .custom-btn:focus {
   outline: none !important;
   outline-offset: none !important;
-}
+} */
 
 .custom-btn-light {
   background-color: #99A5AA !important;

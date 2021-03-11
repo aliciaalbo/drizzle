@@ -220,7 +220,7 @@ function App() {
             <div class="child">
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
             </div>
-            
+            <br></br>
             <div class="child">
               <div class="btn-group mr-3">
               <EB>{zipcode ? <Reroll  fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
@@ -239,7 +239,12 @@ function App() {
             </div>
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}
+            
             {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}
+            <br></br>
+            <br></br>
+            <br></br>
+        
         </section>
     );
 }
