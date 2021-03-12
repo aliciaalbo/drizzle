@@ -29,7 +29,7 @@ function SavePlaylist(props) {
     };
     return (
         <div>
-            <Button variant="dark" class="btn mr-3" onClick={e => { handleClick(e) }}>
+            <Button variant="dark" className="btn mr-3" onClick={e => { handleClick(e) }}>
             I love it keep it forever
             </Button>
             <div>

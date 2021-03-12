@@ -1,5 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 
+
+function ShowPlaylist(props) {
+  return (
+    <div className="playlist container">
+      {props.playlist.map((song, idx) => {
+        return (
+      <div className="playlist-row row" id={song.trackid} key={song.trackid}>
+        <div className="playlist-number col-auto my-auto">{idx+1}</div>
+        <div className="playlist-album col-auto my-auto"><img src="https://i.scdn.co/image/ab67616d0000b2737359994525d219f64872d3b1" /></div>
+        <div className="playlist-trackinfo col my-auto">
+          <div className="playlist-title">{song.title}</div>
+          <div className="playlist-artist">{song.artist}</div>
+        </div>
+     </div>
+        )}
+      )}
+    </div>
+  )
+}
+
+/*
 function ShowPlaylist(props) {
   return (
     <div className="playlist">
@@ -12,8 +33,7 @@ function ShowPlaylist(props) {
         )})}
     </div>
       )}
-
-
+*/
 
 export default ShowPlaylist;
 

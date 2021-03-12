@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom";
-//import { useCookies } from "react-cookie";
 import useStickyState from "./useStickyState";
-// import { Login } from "./loginForm";
 import ZipCodeSearch from "./zipCodeSearch";
 import ShowPlaylist from "./playlist";
 import PlaylistHeader from "./playlistHeader";
@@ -17,8 +15,6 @@ import SearchToggle from "./searchToggle";
 import SpotPlayer from "./spotplayer";
 import BadZip from "./flashBadZip";
 import BadCoords from "./flashBadCoords";
-//import SpotifyPlayer from 'react-spotify-web-playback';
-//import Spotify from "./app.js";
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -71,19 +67,10 @@ function App() {
         console.log("ERROR: ",err);
       });
     }
-    /*
-    const [cookies, setCookie, removeCookie] = useCookies(['access_cookie']);
-    // happens on first load after API callback
-    if (cookies.access_cookie && access_token != cookies.access_cookie) {
-      console.log('update access token', cookies.access_cookie);
-      setAccessToken(cookies.access_cookie);
-    }
-    */
+
     const fetchWeather = (zipcode) => {
       setZipcode(zipcode);
       setInvalidZipInput('');
-      // key = process.env.REACT_APP_WEATHER_API_KEY;
-      //        fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${encodeURIComponent(zipcode)},us&appid=#######`)
       fetch(`/api?do=getWeather&zip=${encodeURIComponent(zipcode)}`)
       .then((response) => {
           console.log("------------",response);
@@ -102,7 +89,7 @@ function App() {
             .then((res) => res.json())
             .then((res) => {console.log(res); return res})
             .then((res) => {
-	      setPlaybackToggle('no');
+              setPlaybackToggle('no');
               // for playing in the web player
               setPlaystate({
                 uris: res.map(t => 'spotify:track:' + t.trackid),
@@ -114,9 +101,7 @@ function App() {
             .catch((err) => {
               console.log("ERROR: ",err);
             });
-          }
-
-          else{
+          } else{
             setInvalidZipInput('yes');
           }
       })
@@ -142,7 +127,6 @@ function App() {
           setCity(data.name);
           setIcon(data.weather[0].icon);
         
-
           console.log("%%%%%%%%%%%%%%%%%%%", weather);
           // pass weather to python get playlist back
           fetch(`/api?do=zipcodeToPlaylist&weather=${data.weather[0].main}&city=${data.name}&icon=${data.weather[0].icon}`)
@@ -185,7 +169,7 @@ function App() {
     const logoutUser = (email) => {
       if (email) {
         fetch(`/api?do=logout&email=${encodeURIComponent(email)}`)
-        .then((res) => {
+        .then(() => {
           console.log('logout attempt')
           setAccessToken("");
           setName("");
@@ -197,54 +181,57 @@ function App() {
       }
     };
 
-
     return (
         <section className="page">
-          <div class="child">
-            <EB>{toggle === 'US' ? <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /> : <LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} />}</EB>
-           </div>
-            {/* <EB><ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} /></EB>
-            <EB><LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} /></EB> */}
-            <div class="child">
+            <div className="child">
+            <EB>{toggle === 'US' ? <ZipCodeSearch fetchWeather={fetchWeather} zipcode={zipcode} />
+             : <LatLonSearch fetchWeatherLatLon={fetchWeatherLatLon} lat={lat} lon={lon} />}</EB>
+            </div>
+            <div className="child">
             <EB><SearchToggle searchToggle={searchToggle} toggle={toggle}/></EB>
             </div>
-            <div class="child">
+            <div className="child">
             <EB>{isInvalidZipInput ==='' ? null : <BadZip />}</EB>
             </div>
-            <div class="child">
+            <div className="child">
             <EB>{isInvalidCoordInput ==='' ? null : <BadCoords />}</EB>
             </div>
-            <div class="child">
+            <div className="child">
             <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
             </div>
-            <div class="child">
+            <div className="child">
             <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
             </div>
-            <br></br>
-            <div class="child">
-              <div class="btn-group mr-3">
+            {access_token && deviceId && playlist.length ? 
+            <EB><div className="btn-group col text-center">
+              <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} />
+            </div></EB>
+           : null}
+
+            <br />
+
+            <div className="child container"><div className="row">
+              <div className="btn-group col text-left">
               <EB>{zipcode ? <Reroll  fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
               </div>
-              <div class="btn-group mr-3">
-                <EB>{access_token && deviceId && playlist.length ? <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} /> : null}</EB>
-
+              {/* {access_token && deviceId && playlist.length ? 
+              <EB><div className="btn-group col text-center">
+                <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} />
+              </div></EB>
+              : null} */}
+              {access_token && playlist.length ?
+              <EB><div className="btn-group col text-center">
+                <SavePlaylist  playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />
+              </div></EB>
+              : null}
+              <div className="btn-group col text-right">
+              <EB>{email ? <Logout  logoutUser={logoutUser} email={email} /> : <SpotifyLogin />}</EB>
               </div>
-              <div class="btn-group mr-3">
-              <EB>{access_token && playlist.length ? <SavePlaylist  playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />: null}</EB>
-              </div>
-              <div style={{ marginLeft: "auto" }} class="btn-group mr-3">
-              <EB>{access_token ? null : <SpotifyLogin  />}</EB>
-              <EB>{email ? <Logout  logoutUser={logoutUser} email={email} /> : null}</EB>
-              </div>
-            </div>
+            </div></div>
+            {/* <div style={{ marginLeft: "auto" }} className="btn-group mr-3"> */}
             {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
             {/* <WebPlayer player={player} /> */}
-            
             {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}
-            <br></br>
-            <br></br>
-            <br></br>
-        
         </section>
     );
 }
