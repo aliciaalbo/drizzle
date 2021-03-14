@@ -150,8 +150,9 @@ def create_playlist(moods):
     for trackid in playlist:
         title = db.session.query(Track.name).filter(Track.track_id==trackid).first()
         artist = db.session.query(Track.artist).filter(Track.track_id==trackid).first()
+        album_art = db.session.query(Track.album_art).filter(Track.track_id==trackid).first()
 
-        songs.append({ "trackid":str(trackid), "title":title[0], "artist":artist[0] })
+        songs.append({ "trackid":str(trackid), "title":title[0], "artist":artist[0], "album_art":album_art[0] })
 
     return songs
 

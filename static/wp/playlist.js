@@ -9,15 +9,19 @@ function ShowPlaylist(props) {
       // pass in list of uris, curtrackid (default 0), determine idx of active track
       if (props.curTrackId) {
         for (const uri in props.playstate.uris) {
+          console.log(uri, props.curTrackId, activeIdx);
           if (props.curTrackId === uri) {
             break;
           }
           activeIdx++;
         }
         // shouldn't happen
-        if (activeIdx > 19) { activeIdx = 0; }
+        console.log('clicked on ',idx,trackid,props.curTrackId,activeIdx);
+        if (activeIdx > 19) { activeIdx = props.curTrackId; }
+        console.log('clicked on ',idx,trackid,props.curTrackId,activeIdx);
       }
-      console.log('clicked on ',idx,trackid,props.curTrackId,activeIdx);
+      //const jump = 
+      //jumpToTrack()
       // then figure out how many fwd/prev to jump to get to clicked track
       // props.webplayer.player.previousTrack().then(() => {
       // });
@@ -33,7 +37,7 @@ function ShowPlaylist(props) {
         return (
       <div className={rowclasses} id={song.trackid} idx={index} key={song.trackid} onClick={e => { handleClick(e, index, song.trackid) }}>
         <div className="playlist-number col-auto my-auto">{songNum}</div>
-        <div className="playlist-album col-auto my-auto"><img src="https://i.scdn.co/image/ab67616d0000b2737359994525d219f64872d3b1" /></div>
+        <div className="playlist-album col-auto my-auto"><img src={song.album_art} /></div>
         <div className="playlist-trackinfo col my-auto">
           <div className="playlist-title">{song.title}</div>
           <div className="playlist-artist">{song.artist}</div>
