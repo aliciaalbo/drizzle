@@ -72,7 +72,7 @@ def parse_api():
         username = request.args.get('username')
         weather = request.args.get('weather')
         city = request.args.get('city')
-        playlist_name = f"{username}'s {weather} {city} Playlist"
+        playlist_name = f"{username}'s {weather} in {city} Playlist"
 
 
         if (access_token):
