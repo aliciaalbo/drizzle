@@ -53,14 +53,16 @@ body {
   color: #99A5AA;
 }
 
+.fa-spotify{
+  color: #1DB954;
+}
 
 .custom-btn {
   background-color:  rgba(255, 255, 255, 0.15) !important;
   border: none !important;
-  color: #99A5AA !important;
+  color: #67717500 !important;
   outline: none !important;
   box-shadow: none;
-  size: 
 }
 
 /* .custom-btn:focus {
@@ -69,11 +71,15 @@ body {
 } */
 
 .custom-btn-light {
-  background-color: #99A5AA !important;
-  border: #99A5AA !important;
-  color: #18455b !important;
+  background-color: #67717500 !important;
+  border: #0d0d0e !important;
+  color: #f858b8 !important;
   outline: none !important;
   padding: 10px
+}
+
+.custom-btn-control {
+  color: whitesmoke !important;
 }
 
 /* .buttons {
@@ -112,12 +118,13 @@ body {
 .playlist {
   background-color: rgba(255, 255, 255, 0.15);
   color: #eee;
-  max-width: 600px;
+  max-width: 500px;
   min-width: 300px;
   width: 70%;
   max-height: 20em;
   overflow-y: scroll;
   overflow-x: hidden;
+  cursor: pointer;
 }
 
 .playlist-row {
@@ -152,6 +159,10 @@ body {
 
 .player-controls {
   text-align: center;
+}
+
+.player-controls button {
+  padding:10px 30px;
 }
 
 table{

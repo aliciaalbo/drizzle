@@ -8,9 +8,10 @@ function showConditions(props) {
   pltitle += '"'+props.weather+" in "+props.city+'" Playlist';
 
   return(
-  <div className="playlist-headbar container"><div className="row playlist-headbar-row">
+  <div className="playlist-headbar container"><div className="row playlist-headbar-row justify-content-center flex-nowrap">
     <div className="col-auto my-auto"><img className="playlist-weather" src={url} alt={props.weather} /></div>
     <div className="col-auto my-auto playlist-titlename">{pltitle}</div>
+    <div className="col-auto my-auto"><img className="playlist-weather" src={url} alt={props.weather} /></div>
   </div></div>
   );
 }

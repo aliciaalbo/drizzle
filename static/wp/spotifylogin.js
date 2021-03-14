@@ -18,7 +18,7 @@ function SpotifyLogin() {
   };
 
   return (
-    <Button variant="success" onClick={e => { handleClick(e) }}><i className="fab fa-spotify"></i>&nbsp;login&nbsp;with&nbsp;Spotify</Button>
+    <Button variant="dark" className="custom-btn-control" onClick={e => { handleClick(e) }}><i className="fab fa-spotify fa-2x"></i>&nbsp;login&nbsp;with&nbsp;Spotify</Button>
   )
 }
 

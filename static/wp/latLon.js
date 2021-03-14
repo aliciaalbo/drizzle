@@ -20,7 +20,7 @@ function LatLonSearch(props) {
     <input variant="dark" type="text" className="form-control" name="lat" defaultValue={props.lat} placeholder="Latitude" required />
     <input variant="dark" type="text" className="form-control" name="lon" defaultValue={props.lon} placeholder="Longitude" required />
     <div className="input-group-append">
-      <button variant="dark" className="btn btn-secondary" type="button">
+      <button variant="dark" className="btn btn-secondary" type="submit">
         <i className="fa fa-search"></i>
       </button>
     </div>

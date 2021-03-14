@@ -54,93 +54,99 @@ for emotion in playlist_emotions:
                                     additional_types=['track'])
         for track in response['items']:
             try:
-                # tracks.append(track['track']['id'])
-                # titles.append(track['track']['name'])
-                # artist_name = ''
-                # for artist in track['track']['artists']:
-                #     # print(artist)
-                #     # print(artist['name'])
-                #     # try:
-                #     if artist_name == '':
-                #         # print(artist['name'])
-                #         artist_name = artist['name']   
-                #     else:
-                #         artist_name = artist_name + ', ' + artist['name']
-                # artists.append(artist_name)
-                print("track:", track['track']['id'],track['track']['album']['images'][0]['url'])
+                tracks.append(track['track']['id'])
+                titles.append(track['track']['name'])
+                artist_name = ''
+                art.append(track['track']['album']['images'][0]['url'])
+                for artist in track['track']['artists']:
+                    # print(artist)
+                    # print(artist['name'])
+                    # try:
+                    if artist_name == '':
+                        # print(artist['name'])
+                        artist_name = artist['name']   
+                    else:
+                        artist_name = artist_name + ', ' + artist['name']
+                artists.append(artist_name)
+
+                # album_art = ''
+
+                # print("track:", track['track']['id'],track['track']['album']['images'][0]['url'])
                 #for art in track['track']['album']['images']:
                 #    for i in enumerate(track['track']['album']['images']):
                 #        print(art['url'])
-            #         # try:
-            #         if artist_name == '':
-            #             # print(artist['name'])
-            #             artist_name = artist['name']   
-            #         else:
-            #             artist_name = artist_name + ', ' + artist['name']
-            #     artists.append(artist_name)
-            #     # print(artists)
-            #     # print(artists)
-            #             # artists.append(artist['name'])
+                    # try:
+                    if artist_name == '':
+                        # print(artist['name'])
+                        artist_name = artist['name']   
+                    else:
+                        artist_name = artist_name + ', ' + artist['name']
+                artists.append(artist_name)
+                # print(artists)
+                # print(artists)
+                        # artists.append(artist['name'])
             except(TypeError):
                 continue
 
 
-    # start_batch = 0
-    # batch_size = 100
-    # end_at = len(tracks) - 1
+    start_batch = 0
+    batch_size = 100
+    end_at = len(tracks) - 1
 
-    # while (start_batch < end_at):
-    #     end_batch = start_batch + batch_size
-    #     if end_batch > end_at:
-    #         end_batch = end_at
+    while (start_batch < end_at):
+        end_batch = start_batch + batch_size
+        if end_batch > end_at:
+            end_batch = end_at
 
-    #     track_ids = tracks[start_batch:end_batch]
-    #     track_info = spotify.audio_features(track_ids)
+        track_ids = tracks[start_batch:end_batch]
+        track_info = spotify.audio_features(track_ids)
 
-    #     for i in range(len(track_info)):
-    #         try:
-    #             track = track_info[i]
-    #             acousticness = track['acousticness']
-    #             track_id = track['id']
-    #             danceability = track['danceability']
-    #             duration_ms = track['duration_ms']
-    #             energy = track['energy']
-    #             instrumentalness = track['instrumentalness']
-    #             key = track['key']
-    #             liveness = track['liveness']
-    #             loudness = track['loudness']
-    #             mode = track['mode']
-    #             name = titles[start_batch + i]
-    #             speechiness = track['speechiness']
-    #             tempo = track['tempo']
-    #             valence = track['valence']
-    #             mood = emotion
-    #             artist = artists[start_batch + i]
-    #         except(TypeError):
-    #             continue
+        for i in range(len(track_info)):
+            try:
+                track = track_info[i]
+                acousticness = track['acousticness']
+                track_id = track['id']
+                danceability = track['danceability']
+                duration_ms = track['duration_ms']
+                energy = track['energy']
+                instrumentalness = track['instrumentalness']
+                key = track['key']
+                liveness = track['liveness']
+                loudness = track['loudness']
+                mode = track['mode']
+                name = titles[start_batch + i]
+                speechiness = track['speechiness']
+                tempo = track['tempo']
+                valence = track['valence']
+                mood = emotion
+                artist = artists[start_batch + i]
+                album_art = album_art[start_batch + i]
+            except(TypeError):
+                continue
 
 
         
-    #         new_track = crud.create_track(acousticness, 
-    #                                 danceability, 
-    #                                 duration_ms, 
-    #                                 energy,
-    #                                 track_id,
-    #                                 instrumentalness,
-    #                                 key,
-    #                                 liveness,
-    #                                 loudness,
-    #                                 mode,
-    #                                 name,
-    #                                 speechiness,
-    #                                 tempo,
-    #                                 valence,
-    #                                 mood, 
-    #                                 artist
-    #                                 )
+            new_track = crud.create_track(acousticness, 
+                                    danceability, 
+                                    duration_ms, 
+                                    energy,
+                                    track_id,
+                                    instrumentalness,
+                                    key,
+                                    liveness,
+                                    loudness,
+                                    mode,
+                                    name,
+                                    speechiness,
+                                    tempo,
+                                    valence,
+                                    mood, 
+                                    artist,
+                                    album_art
+                                    )
 
-    #     start_batch += batch_size
-    #     time.sleep(1)
+        start_batch += batch_size
+        time.sleep(1)
 
 weathers = {
     "Thunderstorm" : ['angry','excited', 'suspense'],

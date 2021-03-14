@@ -31,6 +31,7 @@ class Track(db.Model):
     popularity = db.Column(db.Float)
     mood = db.Column(db.String)
     artist = db.Column(db.String)
+    album_art = db.Column(db.String)
 
     def __repr__(self):
         return f'<<song_id = {self.track_id}>>'
@@ -116,7 +117,7 @@ class PlaylistTracks(db.Model):
 
 
 
-def connect_to_db(flask_app, db_uri='postgresql:///spotify', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///spotify03132021', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = secrets.db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

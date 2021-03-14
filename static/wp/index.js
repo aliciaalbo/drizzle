@@ -15,6 +15,8 @@ import SearchToggle from "./searchToggle";
 import SpotPlayer from "./spotplayer";
 import BadZip from "./flashBadZip";
 import BadCoords from "./flashBadCoords";
+import Failure from "./flash_failure"
+import Success from "./flash_success"
 //import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -24,15 +26,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //   backgroundImage: `url(${Background})`
 // }
 
-
 function App() {
     const [zipcode, setZipcode] = useStickyState("", "zipcode");
     const [playlist, setPlaylist] = useStickyState([], "playlist");
+    const [playstate, setPlaystate] = useStickyState("");
     const [weather, setWeather] = useStickyState("", "weather");
     const [city, setCity] = useStickyState("", "city");
     const [icon, setIcon] = useStickyState("", "icon");
-    const [isReady, setIsReady] = useState("");
-    const [deviceId, setDeviceId] = useState("");
     const [access_token, setAccessToken] = useStickyState("", "access_token");
     // const [refresh_token, setRefreshToken] = useStickyState("", "refresh_token");
     const [name, setName] = useStickyState("", "name");
@@ -40,13 +40,22 @@ function App() {
     const [lon, setLon] = useStickyState("", "lon");
     const [lat, setLat] = useStickyState("", "lat");
     const [toggle, setToggle] = useStickyState("US", "toggle");
-    const [playstate, setPlaystate] = useStickyState("", "playstate");
-    const [playbackToggle, setPlaybackToggle] = useStickyState('no', "playbackToggle");
+
+    // player state items we don't want to persist
+    const [isReady, setIsReady] = useState("");
+    const [deviceId, setDeviceId] = useState("");
+    const [isPaused, setIsPaused] = useState(true);
+    const [curTrackId, setCurTrackId] = useState("");
+    const [playbackToggle, setPlaybackToggle] = useState('no');
+
     const [isInvalidZipInput, setInvalidZipInput] = useState("");
     const [isInvalidCoordInput, setInvalidCoordInput] = useState("");
+    const [pid, setPid] = useState("");
+    const [isError, setIsError] = useState(false);
 
     // instantiate the Spotify Player passes props in object to webplayer.js
-    let webplayer = WebPlayer({ access_token: access_token, isReady: isReady, setIsReady: setIsReady, setDeviceId: setDeviceId });
+    //  isPaused: isPaused, curTrackId: curTrackId, 
+    let webplayer = WebPlayer({ access_token: access_token, isReady: isReady, setIsReady: setIsReady, setDeviceId: setDeviceId, setIsPaused: setIsPaused, setCurTrackId: setCurTrackId });
 
     // load the access token through Python's session if can
     if (!access_token) {
@@ -140,7 +149,7 @@ function App() {
               });
               // for saving to user account
               setPlaylist(res);
-              setPlaybackToggle('no')
+              setPlaybackToggle('no');
             })
             .catch((err) => {
               console.log("ERROR: ",err);
@@ -199,44 +208,41 @@ function App() {
             <div className="child">
             <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
             </div>
+            {/* PLAYLIST */}
             <div className="child">
-            <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} /> :null}</EB>
+            <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} curTrackId={curTrackId} playbackToggle={playbackToggle} playstate={playstate} /> :null}</EB>
             </div>
+            {/* SPOTIFY PLAYER CONTROLS */}
             {access_token && deviceId && playlist.length ? 
             <EB><div className="btn-group col text-center">
-              <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} />
+              <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} deviceId={deviceId} playstate={playstate} playlist={playlist} isPaused={isPaused} curTrackId={curTrackId} />
             </div></EB>
            : null}
-
             <br />
-
+            {/* REROLL / SAVE PLAYLIST / LOGIN-OUT */}
             <div className="child container"><div className="row">
               <div className="btn-group col text-left">
-              <EB>{zipcode ? <Reroll  fetchWeather={fetchWeather} zipcode={zipcode} /> :null}</EB>
+              <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} setPid={setPid} /> :null}</EB>
               </div>
-              {/* {access_token && deviceId && playlist.length ? 
-              <EB><div className="btn-group col text-center">
-                <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} playstate={playstate} playlist={playlist} />
-              </div></EB>
-              : null} */}
               {access_token && playlist.length ?
               <EB><div className="btn-group col text-center">
-                <SavePlaylist  playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} />
+                <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} pid={pid} setPid={setPid} setIsError={setIsError}  />
               </div></EB>
               : null}
               <div className="btn-group col text-right">
-              <EB>{email ? <Logout  logoutUser={logoutUser} email={email} /> : <SpotifyLogin />}</EB>
+              <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : <SpotifyLogin />}</EB>
               </div>
             </div></div>
-            {/* <div style={{ marginLeft: "auto" }} className="btn-group mr-3"> */}
-            {/* {access_token ? console.log(<WebPlayer access_token={access_token} />) : null} */}
-            {/* <WebPlayer player={player} /> */}
-            {/* { access_token ? <SpotifyPlayer token={access_token} uris="['spotify:track:6rqhFgbbKwnb9MLmUQDhG6']"/> : null} */}
+            {/* Flash message */}
+            <div className="child">
+              <EB>
+              {pid ? <Success /> : null }
+              {isError ? <Failure /> : null }
+              </EB>
+            </div>
         </section>
     );
 }
-// ReactDOM.render(<HelloWorld />, document.getElementById("react-root"));
-// ReactDOM.render(<Login />, document.getElementById("login"));
 ReactDOM.render(<App />, document.getElementById("app"));
 
 export default App;

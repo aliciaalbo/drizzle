@@ -16,7 +16,7 @@ function WebPlayer(props) {
     // already loaded, we are rolling a new token probably
     if (window.Spotify) {
       playerRef.current = new window.Spotify.Player({
-        name: 'Moody Playlist Web App',
+        name: 'Drizzle - Weather-Generated Playlists',
         getOAuthToken: cb => {
           console.log('cb at reroll:',token);
           cb(token);
@@ -29,7 +29,7 @@ function WebPlayer(props) {
     // this function is called by the Spotify script once it is dynamically loaded
     window.onSpotifyWebPlaybackSDKReady = () => {
       playerRef.current = new window.Spotify.Player({
-        name: 'Moody Playlist Web App',
+        name: 'Drizzle - Weather-Generated Playlists',
         getOAuthToken: (cb) => {
           console.log('cb at loading sdk first time:',token);
           cb(token);
@@ -80,7 +80,14 @@ function WebPlayer(props) {
           console.log('rdy deviceid', readyDeviceId);
         });
         player.addListener('player_state_changed', state => {
-          console.log('state changed:',state);
+          // if (props.isPaused !== state.paused) {
+          //   console.log("ispaused change:",state.paused);
+            props.setIsPaused(state.paused);
+          // }
+          // if (props.curTrackId !== state.track_window.current_track.id) {
+          //   console.log("cur track: ",props.curTrackId, state.track_window.current_track.id);
+            props.setCurTrackId(state.track_window.current_track.id);
+          // }
         });
         // now connect
         let connected = await playerRef.current.connect();
