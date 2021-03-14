@@ -12,13 +12,13 @@ from datetime import datetime
 import crud
 import model
 import server
+import secrets
 
 model.connect_to_db(server.app)
 model.db.create_all()
 
-cid = os.environ['cid']
-secret = os.environ['secret']
-
+cid = secrets.cid
+secret = secrets.secret
 
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 
@@ -28,13 +28,12 @@ spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 # playlist_emotions = ['happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
 
 # second pass
-# playlist_emotions = ['chill', 'party', 'dance', 'mellow', 'happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
+playlist_emotions = ['chill', 'party', 'dance', 'mellow', 'happy', 'sad', 'calm', 'excited', 'angry', 'suspense', 'pumped', 'relax', 'peaceful', 'serene', 'energy', 'uplift', 'melancholy', 'hopeful', 'alone']
 
 # 'pensive' causing a problem
 
-playlist_emotions = ['chill']
+#playlist_emotions = ['chill']
 for emotion in playlist_emotions:
-
     emotion_playlists = spotify.search(emotion, type="playlist")
     playlists = []
 
@@ -44,20 +43,20 @@ for emotion in playlist_emotions:
     tracks = []
     titles = []
     artists = []
-    art = []
+    album_arts = []
 
-
-
+    #                                     fields='items.track.id,items.track.name,items.track.artists[0].name,items.track.images,total',
+    print("EMOTION:",emotion,len(playlists))
     for item in playlists:
         response = spotify.playlist_items(item,
-                                    fields='items.track.id,items.track.name,items.track.artists[0].name,items.track.imagestotal',
+                                    fields='items.track.id,items.track.name,items.track.artists,items.track.album,total',
                                     additional_types=['track'])
         for track in response['items']:
             try:
                 tracks.append(track['track']['id'])
                 titles.append(track['track']['name'])
+                album_arts.append(track['track']['album']['images'][0]['url'])
                 artist_name = ''
-                art.append(track['track']['album']['images'][0]['url'])
                 for artist in track['track']['artists']:
                     # print(artist)
                     # print(artist['name'])
@@ -69,31 +68,28 @@ for emotion in playlist_emotions:
                         artist_name = artist_name + ', ' + artist['name']
                 artists.append(artist_name)
 
-                # album_art = ''
-
                 # print("track:", track['track']['id'],track['track']['album']['images'][0]['url'])
                 #for art in track['track']['album']['images']:
                 #    for i in enumerate(track['track']['album']['images']):
                 #        print(art['url'])
-                    # try:
-                    if artist_name == '':
-                        # print(artist['name'])
-                        artist_name = artist['name']   
-                    else:
-                        artist_name = artist_name + ', ' + artist['name']
-                artists.append(artist_name)
-                # print(artists)
+                #     try:
+                #         if artist_name == '':
+                #             # print(artist['name'])
+                #             artist_name = artist['name']   
+                #         else:
+                #             artist_name = artist_name + ', ' + artist['name']
+                # artists.append(artist_name)
+                # # print(artists)
                 # print(artists)
                         # artists.append(artist['name'])
             except(TypeError):
                 continue
 
-
     start_batch = 0
     batch_size = 100
     end_at = len(tracks) - 1
-
     while (start_batch < end_at):
+        print("batch:",start_batch,end_at)
         end_batch = start_batch + batch_size
         if end_batch > end_at:
             end_batch = end_at
@@ -120,7 +116,7 @@ for emotion in playlist_emotions:
                 valence = track['valence']
                 mood = emotion
                 artist = artists[start_batch + i]
-                album_art = album_art[start_batch + i]
+                album_art = album_arts[start_batch + i]
             except(TypeError):
                 continue
 
@@ -146,6 +142,7 @@ for emotion in playlist_emotions:
                                     )
 
         start_batch += batch_size
+        print("next batch, start_batch at ",start_batch)
         time.sleep(1)
 
 weathers = {
@@ -175,7 +172,7 @@ for weather in weathers:
         weather = weather
         mood = mood
 
-        #new_weather_mood = crud.create_weather_mood(weather, mood)
+        new_weather_mood = crud.create_weather_mood(weather, mood)
 
     
 

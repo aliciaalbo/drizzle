@@ -21,7 +21,8 @@ def create_track(acoutsicness,
                  tempo,
                  valence,
                  mood,
-                 artist
+                 artist, 
+                 album_art
                  ):
 
     track = Track(acoutsicness = acoutsicness,
@@ -39,7 +40,8 @@ def create_track(acoutsicness,
                  tempo = tempo,
                  valence = valence,
                  mood = mood,
-                 artist = artist
+                 artist = artist,
+                 album_art = album_art
                  )
 
     db.session.add(track)

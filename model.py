@@ -118,6 +118,7 @@ class PlaylistTracks(db.Model):
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///spotify03132021', echo=True):
+    # ignoring passed-in db_uri so it works on the server
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = secrets.db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
