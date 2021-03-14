@@ -13,7 +13,7 @@ import json
 import secrets
 
 app = Flask(__name__)
-app.secret_key = "GFRWYU83752ounfatgr25DCFgw8795trhegsfjdvn"
+app.secret_key = secrets.secret_key
 app.jinja_env.undefined = StrictUndefined
 
 connect_to_db(app)
@@ -77,7 +77,6 @@ def parse_api():
 
         if (access_token):
             user = crud.get_user_by_access_token(access_token)
-            
             sp = spotipy.Spotify(auth_manager=auth_manager)            
             #token_info = sp.refresh_access_token(user.refresh_token)
 #        token_info = auth_manager.get_access_token(request.args.get('code'), check_cache=False)
@@ -139,4 +138,3 @@ def get_email_and_token():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
-

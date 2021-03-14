@@ -1,15 +1,7 @@
 import React from 'react';
-// import { useState } from "react";
-// import Failure from "./flash_failure"
-// import Success from "./flash_success"
-import Button from 'react-bootstrap/Button';
-
-// import FlashMessage from "react-flash-message";
+//import Button from 'react-bootstrap/Button';
 
 function SavePlaylist(props) {
-    // const [pid, setPid] = useState("");
-    // const [isError, setIsError] = useState(false);
-
     const handleClick = (e) => {
         e.preventDefault();
         const tracks = props.playlist.map(t => t.trackid);
@@ -32,13 +24,9 @@ function SavePlaylist(props) {
     };
     return (
         <div>
-            <Button variant="dark" className="custom-btn-control" onClick={e => { handleClick(e) }}>
-            Save playlist to Spotify
-            </Button>
-            {/* <div>
-            {pid ? <Success /> : null }
-            {isError ? <Failure /> : null }
-            </div> */}
+            <button className="btn-actions justify-content-center flex-nowrap" onClick={e => { handleClick(e) }}><i className="fas fa-cloud-upload-alt fa-2x"></i>
+            <span>Save Playlist on Spotify</span>
+            </button>
         </div>
     )
 }

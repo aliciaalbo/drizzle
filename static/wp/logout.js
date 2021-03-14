@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 
 function Logout(props) {
     const handleClick = (e) => {
@@ -7,9 +7,8 @@ function Logout(props) {
         props.logoutUser(props.email);
     };
     return (
-        <Button  variant="dark" className="custom-btn-control" onClick={e => { handleClick(e) }}><i className="fab fa-spotify fa-2x"></i>&nbsp;
-          logout 
-        </Button>
+        <button className="btn-actions justify-content-center flex-nowrap" onClick={e => { handleClick(e) }}><i className="fab fa-spotify fa-2x"></i>
+        <span>Logout</span></button>
     )
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 
 // props: access_token, webplayer, playerstate
 function SpotPlayer(props) {
@@ -41,18 +41,16 @@ function SpotPlayer(props) {
     }   
 
     return (
-      <div className="container">
-        <div className="player-controls row justify-content-center flex-nowrap">
-          <Button className="custom-btn-light" onClick={e => { prev(e) }}><i className="fa fa-backward fa-2x"></i></Button>
-          {props.playbackToggle === 'yes' ?
-            <Button className="custom-btn-light" variant="dark" onClick={e => { pause(e) }}><i className={
-                props.isPaused === false ? 'fas fa-pause fa-2x' : 'fas fa-play fa-2x' 
-            }></i></Button>
-            :
-            <Button className="custom-btn-light" variant="dark" onClick={e => { play(e) }}><i className="fas fa-play fa-2x"></i></Button>
-          }
-          <Button className="custom-btn-light" variant="dark" onClick={e => { next(e) }}><i className="fas fa-forward fa-2x"></i></Button>
-        </div>
+      <div className="row player-controls justify-content-center flex-nowrap">
+        <button className="col btn-controls btn-prev" onClick={e => { prev(e) }}><i className="fa fa-backward fa-2x"></i></button>
+        {props.playbackToggle === 'yes' ?
+          <button className="col btn-controls btn-playpause" onClick={e => { pause(e) }}><i className={
+            props.isPaused === false ? "fas fa-pause fa-3x" : "fas fa-play-circle fa-3x"
+          }></i></button>
+        :
+          <button className="col btn-controls btn-playpause" onClick={e => { play(e) }}><i className="fas fa-play-circle fa-3x"></i></button>
+        }
+        <button className="col btn-controls btn-next" onClick={e => { next(e) }}><i className="fas fa-forward fa-2x"></i></button>
       </div>
     )
 }

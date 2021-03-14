@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 
 function SpotifyLogin() {
   const handleClick = (e) => {
@@ -18,7 +18,8 @@ function SpotifyLogin() {
   };
 
   return (
-    <Button variant="dark" className="custom-btn-control" onClick={e => { handleClick(e) }}><i className="fab fa-spotify fa-2x"></i>&nbsp;login&nbsp;with&nbsp;Spotify</Button>
+    <button className="btn-actions justify-content-center flex-nowrap" onClick={e => { handleClick(e) }}><i className="fab fa-spotify fa-2x"></i>
+    <span>Login with Spotify</span></button>
   )
 }
 

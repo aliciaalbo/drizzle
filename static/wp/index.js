@@ -214,25 +214,27 @@ function App() {
             </div>
             {/* SPOTIFY PLAYER CONTROLS */}
             {access_token && deviceId && playlist.length ? 
-            <EB><div className="btn-group col text-center">
+            <EB><div className="child container">
               <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} deviceId={deviceId} playstate={playstate} playlist={playlist} isPaused={isPaused} curTrackId={curTrackId} />
             </div></EB>
            : null}
             <br />
             {/* REROLL / SAVE PLAYLIST / LOGIN-OUT */}
-            <div className="child container"><div className="row">
-              <div className="btn-group col text-left">
+            <div className="child container">
+             <div className="row actions-row">
+              <div className="col text-left">
               <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} setPid={setPid} /> :null}</EB>
               </div>
               {access_token && playlist.length ?
-              <EB><div className="btn-group col text-center">
+              <EB><div className="col text-center">
                 <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} pid={pid} setPid={setPid} setIsError={setIsError}  />
               </div></EB>
               : null}
-              <div className="btn-group col text-right">
+              <div className="col text-right">
               <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : <SpotifyLogin />}</EB>
               </div>
-            </div></div>
+             </div>
+            </div>
             {/* Flash message */}
             <div className="child">
               <EB>
