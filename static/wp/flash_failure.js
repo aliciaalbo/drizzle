@@ -1,13 +1,13 @@
 import React from 'react';
 import FlashMessage from 'react-flash-message';
-import Alert from 'react-bootstrap/Alert';
- 
+//import Alert from 'react-bootstrap/Alert';
 
 function Failure(){
     return(
     <FlashMessage duration={5000} persistOnHover={true}>
-    <Alert variant="warning">Something went wrong! Try logging out and loggin in again.</Alert>
-    </FlashMessage>)
+    <div className="flashError">Something went wrong! Try logging out then logging back in.</div>
+    </FlashMessage>
+    )
 }
 
 export default Failure;

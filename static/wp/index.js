@@ -205,42 +205,37 @@ function App() {
             <div className="child">
             <EB>{isInvalidCoordInput ==='' ? null : <BadCoords />}</EB>
             </div>
+            {/* PLAYLIST CONTAINER */}
             <div className="child">
-            <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
-            </div>
-            {/* PLAYLIST */}
-            <div className="child">
-            <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} curTrackId={curTrackId} playbackToggle={playbackToggle} playstate={playstate} /> :null}</EB>
-            </div>
-            {/* SPOTIFY PLAYER CONTROLS */}
-            {access_token && deviceId && playlist.length ? 
-            <EB><div className="child container">
-              <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} deviceId={deviceId} playstate={playstate} playlist={playlist} isPaused={isPaused} curTrackId={curTrackId} />
-            </div></EB>
-           : null}
-            <br />
-            {/* REROLL / SAVE PLAYLIST / LOGIN-OUT */}
-            <div className="child container">
-             <div className="row actions-row">
-              <div className="col text-left">
-              <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} setPid={setPid} /> :null}</EB>
-              </div>
-              {access_token && playlist.length ?
-              <EB><div className="col text-center">
-                <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} pid={pid} setPid={setPid} setIsError={setIsError}  />
-              </div></EB>
-              : null}
-              <div className="col text-right">
-              <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : <SpotifyLogin />}</EB>
-              </div>
-             </div>
-            </div>
-            {/* Flash message */}
-            <div className="child">
+             <div className="playlistContainer">
+              <EB>{zipcode || lat ? <PlaylistHeader weather={weather} city={city} icon={icon} username={name} />:null}</EB>
+              {/* PLAYLIST */}
+              <EB>{playlist.length ? <ShowPlaylist playlist={playlist} name={name} curTrackId={curTrackId} playbackToggle={playbackToggle} playstate={playstate} webplayer={webplayer} /> :null}</EB>
+              {/* SPOTIFY PLAYER CONTROLS */}
+              {access_token && deviceId && playlist.length ? 
               <EB>
-              {pid ? <Success /> : null }
-              {isError ? <Failure /> : null }
+              <SpotPlayer playbackToggle={playbackToggle} setPlaybackToggle={setPlaybackToggle} access_token={access_token} webplayer={webplayer} deviceId={deviceId} playstate={playstate} playlist={playlist} isPaused={isPaused} curTrackId={curTrackId} />
               </EB>
+              : null}
+              {/* REROLL / SAVE PLAYLIST / LOGIN-OUT */}
+              <div className="row actions-row">
+                <div className="col text-left">
+                <EB>{zipcode ? <Reroll fetchWeather={fetchWeather} zipcode={zipcode} setPid={setPid} /> :null}</EB>
+                </div>
+                {access_token && playlist.length ?
+                <EB><div className="col text-center">
+                  <SavePlaylist playlist={playlist} access_token={access_token} username={name} weather={weather} city={city} pid={pid} setPid={setPid} setIsError={setIsError}  />
+                </div></EB>
+                : null}
+                <div className="col text-right">
+                <EB>{email ? <Logout logoutUser={logoutUser} email={email} /> : <SpotifyLogin />}</EB>
+                </div>
+              </div>
+              <EB>
+                {pid ? <Success /> : null }
+                {isError ? <Failure /> : null }
+              </EB>
+             </div>
             </div>
         </section>
     );

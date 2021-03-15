@@ -56,10 +56,11 @@ body {
 }
 
 .player-controls {
-  max-width: 700px !important;
+  /* max-width: 700px !important;
   min-width: 300px !important;
   width: 90% !important;
-  padding:0 10px;
+  padding:0 10px; */
+  width:100%;
 }
 
 .btn-controls {
@@ -69,9 +70,9 @@ body {
   outline: none !important;
 }
 
-.btn-controls:hover {
+/* .btn-controls:hover {
   background-color:  rgba(255, 255, 255, 0.15) !important;
-}
+} */
 
 .btn-prev {
   /* border-left: 1px solid #f858b8 !important; */
@@ -91,9 +92,11 @@ body {
 
 /************ ACTION BUTTONS ***************/
 .actions-row {
-  max-width: 730px !important;
+  /* max-width: 730px !important;
   min-width: 300px !important;
-  width: 90% !important;
+  width: 90% !important; */
+  /* width:100% !important;
+  margin-right:-15px; */
 }
 
 .btn-actions {
@@ -105,6 +108,7 @@ body {
   border-radius:20px;
   white-space: nowrap;
   border: 1px solid #333;
+  margin-top:15px;
 }
 .btn-actions:hover {
   background-color: #000000 !important;
@@ -140,11 +144,20 @@ body {
   color: whitesmoke !important;
 }
 
+.playlistContainer {
+  /* background-color:#000; */
+  max-width: 700px !important;
+  min-width: 300px !important;
+  width: 90% !important;
+  display:block;
+}
+
 .playlist-headbar {
   color:white;
-  max-width: 90% !important;
+  /* max-width: 90% !important;
   min-width: 300px;
-  margin:0 auto;
+  margin:0 auto; */
+  width:100% !important;
 }
 
 .playlist-headbar-row {
@@ -170,13 +183,15 @@ body {
 .playlist {
   background-color: rgba(255, 255, 255, 0.15);
   color: #eee;
-  max-width: 700px !important;
+  /* max-width: 700px !important;
   min-width: 300px !important;
-  width: 90% !important;
+  width: 90% !important; */
+  width:100% !important;
   max-height: 20em;
   overflow-y: scroll;
   overflow-x: hidden;
   cursor: pointer;
+  margin-top:-10px;
 }
 
 .playlist-row {
@@ -191,8 +206,12 @@ body {
   color:white;
 }
 
-.playlist-number {}
+.playlist-number {
+  width: 40px !important;
+}
+
 .playlist-album {}
+
 .playlist-album img {
   width:40px;
   height:40px;
@@ -208,6 +227,31 @@ body {
 .playlist-artist{
   font-size: smaller;
 }
+
+/************ FLASH MESSAGE ***************/
+.flashSuccess {
+  background-color: #cffecc;
+  border: 1px solid #89ec8a;
+  font-color:#000;
+  display:block;
+  width:100%;
+  padding:20px;
+  margin-top:10px;
+}
+.flashError {
+  background-color: #ffcccb;
+  border: 1px solid #f89290;
+  font-color:#000;
+  display:block;
+  width:100%;
+  padding:20px;
+  margin-top:10px;
+}
+
+
+
+
+
 
 table{
   background-color: rgba(255, 255, 255, 0.15) ;
@@ -232,9 +276,10 @@ table{
 
 .searchbar {
   width: 50%;
-  margin: 50px auto 0px;
+  margin: 30px auto 0px;
   max-width:600px;
 }
+
 .form-control {
   padding-left: 2.375rem;
 }

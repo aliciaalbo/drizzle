@@ -1,41 +1,13 @@
 import React from 'react';
 
 function ShowPlaylist(props) {
-  const handleClick = (e, idx, trackid) => {
-    e.preventDefault();
-    // only work if playback already started... for now
-    if (props.playbackToggle === 'yes') {
-      let activeIdx = 0;
-      // pass in list of uris, curtrackid (default 0), determine idx of active track
-      if (props.curTrackId) {
-        for (const uri in props.playstate.uris) {
-          console.log(uri, props.curTrackId, activeIdx);
-          if (props.curTrackId === uri) {
-            break;
-          }
-          activeIdx++;
-        }
-        // shouldn't happen
-        console.log('clicked on ',idx,trackid,props.curTrackId,activeIdx);
-        if (activeIdx > 19) { activeIdx = props.curTrackId; }
-        console.log('clicked on ',idx,trackid,props.curTrackId,activeIdx);
-      }
-      //const jump = 
-      //jumpToTrack()
-      // then figure out how many fwd/prev to jump to get to clicked track
-      // props.webplayer.player.previousTrack().then(() => {
-      // });
-    }
-  };
-
   return (
     <div className="playlist container">
       {props.playlist.map((song, index) => {
         const rowclasses = song.trackid === props.curTrackId ? 'playlist-row row playlist-row-active' : 'playlist-row row';
         const songNum = index+1;
-        // const space = &nbsp; + songNum;
         return (
-      <div className={rowclasses} id={song.trackid} idx={index} key={song.trackid} onClick={e => { handleClick(e, index, song.trackid) }}>
+      <div className={rowclasses} id={song.trackid} idx={index} key={song.trackid}>
         <div className="playlist-number col-auto my-auto">{songNum}</div>
         <div className="playlist-album col-auto my-auto"><img src={song.album_art} /></div>
         <div className="playlist-trackinfo col my-auto">
