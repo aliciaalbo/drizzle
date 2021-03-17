@@ -12,4 +12,6 @@ compile
 compilesrv
 compiledev
 server.ini
-static/dist/bundle.js
+static/dist/
+node_modules/
+package-lock.json

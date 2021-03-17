@@ -1,6 +1,0 @@
-cp "/home/vagrant/src/New folder/static/wp/"* "/home/vagrant/outsrc/wp/scripts"
-cd /home/vagrant/outsrc/wp
-npm run dev-build
-cp "/home/vagrant/outsrc/wp/dist/bundle.js" "/home/vagrant/src/New folder/static/dist"
-cd "/home/vagrant/src/New folder"
-
