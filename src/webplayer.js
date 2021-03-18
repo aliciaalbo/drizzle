@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 function WebPlayer(props) {
-  // not entirely sure how useRef works, but keeps the player from writing over itself
+  // keeps the player from writing over itself
   const playerRef = useRef(null);
   const token = props.access_token;
   const isReady = props.isReady;
@@ -52,10 +52,7 @@ function WebPlayer(props) {
    }
   }, [token]);
 
-  // const handleReady = useCallback(({ device_id: readyDeviceId }) => {
-  //   setDeviceId(readyDeviceId);
-  //   console.log('handleReady');
-  // }, []);
+
 
   // connect to Spotify once the player is created
   useEffect(() => {
@@ -80,14 +77,10 @@ function WebPlayer(props) {
           console.log('rdy deviceid', readyDeviceId);
         });
         player.addListener('player_state_changed', state => {
-          // if (props.isPaused !== state.paused) {
-          //   console.log("ispaused change:",state.paused);
+
             props.setIsPaused(state.paused);
-          // }
-          // if (props.curTrackId !== state.track_window.current_track.id) {
-          //   console.log("cur track: ",props.curTrackId, state.track_window.current_track.id);
             props.setCurTrackId(state.track_window.current_track.id);
-          // }
+         
         });
         // now connect
         let connected = await playerRef.current.connect();

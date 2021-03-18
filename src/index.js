@@ -17,14 +17,9 @@ import BadZip from "./flashBadZip";
 import BadCoords from "./flashBadCoords";
 import Failure from "./flash_failure"
 import Success from "./flash_success"
-//import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// import Background from './static/img/background.png';
 
-// var sectionStyle = {
-//   backgroundImage: `url(${Background})`
-// }
 
 function App() {
     const [zipcode, setZipcode] = useStickyState("", "zipcode");
@@ -34,7 +29,6 @@ function App() {
     const [city, setCity] = useStickyState("", "city");
     const [icon, setIcon] = useStickyState("", "icon");
     const [access_token, setAccessToken] = useStickyState("", "access_token");
-    // const [refresh_token, setRefreshToken] = useStickyState("", "refresh_token");
     const [name, setName] = useStickyState("", "name");
     const [email, setEmail] = useStickyState("", "email");
     const [lon, setLon] = useStickyState("", "lon");

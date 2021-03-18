@@ -1,10 +1,10 @@
 import React from 'react';
-//import Button from 'react-bootstrap/Button';
+
 
 // props: access_token, webplayer, playerstate
 function SpotPlayer(props) {
   console.log('spotplayer:',props);
-  //const deviceId = props.webplayer.player._options.id;
+  
   const deviceId = props.deviceId;
   function play(e) {
       e.preventDefault();

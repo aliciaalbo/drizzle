@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 
 function SearchToggle(props) {
 
-  //  function handleSubmit(e) {
+
   const handleSubmit = (e) => {
     e.preventDefault();
     props.searchToggle()

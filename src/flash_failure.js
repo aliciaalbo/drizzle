@@ -1,6 +1,6 @@
 import React from 'react';
 import FlashMessage from 'react-flash-message';
-//import Alert from 'react-bootstrap/Alert';
+
 
 function Failure(){
     return(

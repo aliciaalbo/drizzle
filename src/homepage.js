@@ -11,7 +11,7 @@ function Homepage() {
   );
 }
 
-//ReactDOM.render(<Homepage />, document.getElementById('app'));
+
 
 ReactDOM.render(  (
    <div>

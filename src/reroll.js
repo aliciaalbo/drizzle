@@ -17,9 +17,4 @@ function Reroll(props) {
 }
 
 
-{/* <div style={{ display: "flex" }}>
-<Button style={{ marginRight: "auto" }} onClick={e => { handleClick(e) }}>
-New Mix
-</Button>
-</div> */}
 export default Reroll;
