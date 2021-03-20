@@ -29,7 +29,7 @@ To generate a new playlist, simply enter your zip code:
 
 Non-U.S. visitors can enter latitude/longitude coordinates instead:
 
-<br/>![Weather lookup with latitude/longitude search](/static/img/anim-zipcode.gif)<br/><br/>
+<br/>![Weather lookup with latitude/longitude search](/static/img/anim-latlon.gif)<br/><br/>
 
 If the user wants a different selection, the "New Mix" button generates a new selection of tracks using the same weather data.
 
